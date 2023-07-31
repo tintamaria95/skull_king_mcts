@@ -1,0 +1,3 @@
+Pour faciliter l'apprentissage:
+    La carte scary_mary n'est pas implémentée
+    Le score ne prend en compte que les plis et pas les captures de sirenes ou de sk
