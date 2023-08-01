@@ -1,25 +1,27 @@
 import random
 from typing import List
 import logging
+from copy import deepcopy
 
-from Player import Player
 from Deck import Deck
 
 
 class Game():
     nb_players = None
-    players: List[Player] = []
     first_player = None
+
+    players_cards: List[str] = []
+    players_pred_folds: List[str] = []
+    players_won_folds: List[str] = []
+    players_scores = []
 
     game_round = 1  # from 1 to 10
 
-    def __init__(self, game_round=1, game_phase=0, nb_players=2):
+    def __init__(self, game_round=1, nb_players=2, players=None):
+        if players is not None:
+            assert nb_players == len(players)
         self.nb_players = nb_players
-        for player_id in range(nb_players):
-            player = Player(player_id)
-            self.players.append(player)
         self.game_round = game_round
-        self.game_phase = game_phase
         self.first_player = random.randint(0, nb_players - 1)
 
     def get_score(self, predicted_wins, actual_wins):
@@ -34,28 +36,31 @@ class Game():
             else:
                 return - 10 * abs(predicted_wins - actual_wins)
 
-    def play_round(self):
-        logging.debug(f'Start round {self.game_round}')
+    def init_round(self):
+        logging.debug(f'Init round {self.game_round} (deal cards)')
         # shuffle the deck
         deck = Deck()
-        cards_to_draw = deck.cards_to_draw
+        cards_to_draw = [[v, c, False] for (v, c) in deck.cards_to_draw]
         # gives each player a number of cards equal to the game round number
-        for player in self.players:
-            player.won_folds = 0
-            player.cards = cards_to_draw[
-                player._id * self.game_round:
-                player._id * self.game_round + self.game_round
-                ]
+        self.players_won_folds = [0] * self.nb_players
+        self.players_cards = [
+                cards_to_draw[
+                    player_id * self.game_round:
+                    player_id * self.game_round + self.game_round
+                ] for player_id in range(self.nb_players)]
+        for player_id in range(self.nb_players):
             logging.debug(
-                f'Cards player {player._id}: {player.cards}')
-            # Each card has tags (number, color, is_played)
-            player.cards = [[n, c, False] for (n, c) in player.cards]
+                f'Cards player {player_id}: {self.players_cards[player_id]}')
+
+    def play_round(self):
+        logging.debug(f'Start round {self.game_round}')
         # Phase 1: Bid
-        for player in self.players:
-            # ACTION
-            player.predicted_folds = random.randint(0, self.game_round)
+        self.players_pred_folds = [random.randint(0, self.game_round)
+                                   for _ in range(self.nb_players)]
+        for player_id in range(self.nb_players):
             logging.debug(
-                f'Prediction player {player._id}: {player.predicted_folds}')
+                f'Prediction player {player_id}:'
+                f' {self.players_pred_folds[player_id]}')
         # Phase 2: Play cards
         for i_round in range(self.game_round):
             logging.debug(
@@ -63,28 +68,30 @@ class Game():
                 f'First player: {self.first_player}')
             chosen_color = None
             fold_cards = []
-            for i_player in range(self.nb_players):
-                turn = (self.first_player + i_player) % (self.nb_players)
+            for i in range(self.nb_players):
+                turn = (self.first_player + i) % (self.nb_players)
                 is_chosen_color_in_player_cards = chosen_color in [
-                        card[1] for card in self.players[turn].cards
+                        card[1] for card in self.players_cards[turn]
                         if not card[2]]
                 # A player must follow the color of the round if he can
                 # 'black' and special cards are not concerned.
                 if chosen_color not in ['black', None] and \
                         is_chosen_color_in_player_cards:
                     legal_moves = [
-                        i for i, card in enumerate(self.players[turn].cards)
-                        if card[1] == chosen_color and not card[2]]
+                        i for i, card in enumerate(self.players_cards[turn])
+                        # special cards can be played instead of chosen_color
+                        if (card[1] == chosen_color or card[1] is None)
+                        and not card[2]]
                 else:
                     legal_moves = [
-                        i for i, card in enumerate(self.players[turn].cards)
+                        i for i, card in enumerate(self.players_cards[turn])
                         if not card[2]]
                 # ACTION
                 action = random.choice(legal_moves)
-                chosen_card = self.players[turn].cards[action]
+                self.players_cards[turn][action][2] = True  # set as played
 
+                chosen_card = self.players_cards[turn][action]
                 fold_cards.append(chosen_card)
-                chosen_card[2] = True  # set as played
 
                 # Set the color for the fold if not already set
                 if chosen_color is None:
@@ -107,17 +114,18 @@ class Game():
             self.first_player = player_who_won
             logging.debug(
                 f'Fold winner: {player_who_won}')
-            self.players[player_who_won].won_folds += 1
+            self.players_won_folds[player_who_won] += 1
         # Calculate the score for each player and save
-        for player in self.players:
-            player.score = self.get_score(
-                predicted_wins=player.predicted_folds,
-                actual_wins=player.won_folds
-            )
+        self.players_scores = [self.get_score(
+            predicted_wins=self.players_pred_folds[player_id],
+            actual_wins=self.players_won_folds[player_id]
+        ) for player_id in range(self.nb_players)]
+        for player_id in range(self.nb_players):
             logging.debug(
-                f'SCORE Player {player._id};'
-                f' folds: {player.won_folds}/{player.predicted_folds}'
-                f' -> score: {player.score}')
+                f'SCORE Player {player_id};'
+                f' folds: {self.players_won_folds[player_id]}'
+                f'/{self.players_pred_folds[player_id]}'
+                f' -> score: {self.players_scores[player_id]}')
         logging.debug(f'End round {self.game_round}')
 
 
@@ -197,5 +205,12 @@ if __name__ == "__main__":
     }
 
     game = Game(**args)
+    game.init_round()
+    game2 = deepcopy(game)
     game.play_round()
+    for player_id in range(game2.nb_players):
+        logging.debug(
+            f'Cards player {player_id}: {game2.players_cards[player_id]}')
+    game2.play_round()
+
     logging.info('Game ended')

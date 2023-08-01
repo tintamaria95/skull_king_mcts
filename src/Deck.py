@@ -6,11 +6,11 @@ class Deck():
     cards_to_draw = None
 
     def __init__(self) -> None:
-
+        # False indicates that the card hasn't been played yet
         self.cards_list = [
             *[(number, color)
                 for number in range(1, 13)
-                for color in ['red', 'blue', 'yellow', 'black']],
+                for color in ('red', 'blue', 'yellow', 'black')],
             *[('escape', None)] * 6,
             *[('pirate', None)] * 5,
             *[('mermaid', None)] * 2,
