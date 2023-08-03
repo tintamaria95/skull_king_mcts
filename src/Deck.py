@@ -4,6 +4,8 @@ import random
 class Deck():
 
     cards_to_draw = None
+    card2index = {}
+    index2card = {}
 
     def __init__(self) -> None:
         # False indicates that the card hasn't been played yet
@@ -17,6 +19,11 @@ class Deck():
             ('skull_king', None),
             # ('scary_mary', None)
         ]
+
+        for i, card in enumerate(self.cards_list):
+            self.card2index[card] = i
+            self.index2card[i] = card
+
         self.number_of_cards = len(self.cards_list)
         self.cards_to_draw = self.get_shuffled_deck()
 

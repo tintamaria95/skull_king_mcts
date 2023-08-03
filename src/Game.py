@@ -1,13 +1,27 @@
 import random
 from typing import List
 import logging
-from copy import deepcopy
+# from copy import deepcopy
 
 from Deck import Deck
 
 
 class Game():
+    '''
+    The number players must be defined by'nb_players'.
+    (If no definition, the default number is 2)
+    The type of players can be :
+        - random (actions are chosen randmoly)
+        - human (actions are asked by the console)
+        - mcts (actions are chosen by the mcts algorithm),
+    and must be defined by the parameter 'players_type', making the peers
+    key-value 'type': List[player_index0, ...]
+    '''
     nb_players = None
+    # The player who play the first card at the beginning of a round changes
+    # at each round.
+    first_round_player = None
+    # The player who won the previous fold
     first_player = None
 
     players_cards: List[str] = []
@@ -15,14 +29,30 @@ class Game():
     players_won_folds: List[str] = []
     players_scores = []
 
+    mcts = {}
+
     game_round = 1  # from 1 to 10
 
-    def __init__(self, game_round=1, nb_players=2, players=None):
-        if players is not None:
-            assert nb_players == len(players)
+    def __init__(self, game_round=1, nb_players=2, players=None,
+                 players_type={'random': [0, 1], 'human': [], 'mcts': []}):
+        assert nb_players == sum([len(x) for x in players_type.values()]), \
+            ("param 'nb_players' must be equal to the number of"
+             " players indexes defined in 'players_type'")
+        assert all(v in range(nb_players)
+                   for v in [
+                       y for x in players_type.values() for y in x]), \
+            ("Index values in 'players_type' must be"
+             " >= 0 and < 'nb_players' (in range(nb_players))")
+
         self.nb_players = nb_players
         self.game_round = game_round
-        self.first_player = random.randint(0, nb_players - 1)
+        self.first_round_player = random.randint(0, nb_players - 1)
+        self.players_scores = [0 for _ in range(nb_players)]
+
+        self.player_id2type_player = {}
+        for t in ['random', 'human', 'mcts']:
+            for player_id in players_type[t]:
+                self.player_id2type_player[player_id] = t
 
     def get_score(self, predicted_wins, actual_wins):
         if predicted_wins == 0:
@@ -32,7 +62,7 @@ class Game():
                 return - 10 * self.game_round
         else:
             if predicted_wins == actual_wins:
-                return 10 * predicted_wins
+                return 20 * predicted_wins
             else:
                 return - 10 * abs(predicted_wins - actual_wins)
 
@@ -48,16 +78,40 @@ class Game():
                     player_id * self.game_round:
                     player_id * self.game_round + self.game_round
                 ] for player_id in range(self.nb_players)]
+
+        self.players_pred_folds = [0 for _ in range(self.nb_players)]
+
         for player_id in range(self.nb_players):
             logging.debug(
                 f'Cards player {player_id}: {self.players_cards[player_id]}')
 
+    def action_bid(self, player_id: int):
+        if self.player_id2type_player[player_id] == 'random':
+            self.players_pred_folds[player_id] = random.randint(
+                0, self.game_round)
+        elif self.player_id2type_player[player_id] == 'mcts':
+            self.players_pred_folds[player_id] = random.randint(
+                0, self.game_round)
+        elif self.player_id2type_player[player_id] == 'human':
+            bid_choice = ''
+            while not bid_choice.isnumeric():
+                bid_choice = input(
+                    f'Choose bid (in range (0-{self.game_round}): ')
+                self.players_pred_folds[player_id] = int(bid_choice)
+        else:
+            raise ValueError(
+                f"Type of player {player_id} = "
+                "{self.player_id2type_player[player_id]}."
+                "Player type must be in 'random', 'human' or 'mcts'.")
+
     def play_round(self):
+        # The first player to play at the beginning of the round
+        # changes at each round
+        self.first_player = self.first_round_player % (self.nb_players)
         logging.debug(f'Start round {self.game_round}')
         # Phase 1: Bid
-        self.players_pred_folds = [random.randint(0, self.game_round)
-                                   for _ in range(self.nb_players)]
         for player_id in range(self.nb_players):
+            self.action_bid(player_id)
             logging.debug(
                 f'Prediction player {player_id}:'
                 f' {self.players_pred_folds[player_id]}')
@@ -116,7 +170,7 @@ class Game():
                 f'Fold winner: {player_who_won}')
             self.players_won_folds[player_who_won] += 1
         # Calculate the score for each player and save
-        self.players_scores = [self.get_score(
+        self.players_scores = [self.players_scores[player_id] + self.get_score(
             predicted_wins=self.players_pred_folds[player_id],
             actual_wins=self.players_won_folds[player_id]
         ) for player_id in range(self.nb_players)]
@@ -126,7 +180,15 @@ class Game():
                 f' folds: {self.players_won_folds[player_id]}'
                 f'/{self.players_pred_folds[player_id]}'
                 f' -> score: {self.players_scores[player_id]}')
+        self.first_round_player += 1
         logging.debug(f'End round {self.game_round}')
+
+    def play_game(self):
+        assert self.game_round > 0 and self.game_round <= 10
+        for _ in range(self.game_round, 11):
+            self.init_round()
+            self.play_round()
+            self.game_round += 1
 
 
 def get_index_winner_card(fold_cards: list):
@@ -200,17 +262,13 @@ if __name__ == "__main__":
     logging.info('New game started -------------------------------')
 
     args = {
-        'nb_players': 5,
-        'game_round': 5
+        'nb_players': 2,
+        'game_round': 1
     }
 
     game = Game(**args)
-    game.init_round()
-    game2 = deepcopy(game)
-    game.play_round()
-    for player_id in range(game2.nb_players):
-        logging.debug(
-            f'Cards player {player_id}: {game2.players_cards[player_id]}')
-    game2.play_round()
+    # game.init_round()
+    # game.play_round()
+    game.play_game()
 
     logging.info('Game ended')
