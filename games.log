@@ -1,257 +1,668 @@
 INFO:root:New game started -------------------------------
 DEBUG:root:Init round 1 (deal cards)
-DEBUG:root:Cards player 0: [[1, 'black', False]]
-DEBUG:root:Cards player 1: [['escape', None, False]]
+DEBUG:root:Cards player 0:[[6, 'black', False]]
+DEBUG:root:Cards player 1:[[2, 'blue', False]]
+DEBUG:root:Start round 1
+DEBUG:root:Prediction player 0: 1
+DEBUG:root:Prediction player 1: 0
+DEBUG:root:Fold 1: First player: 0
+DEBUG:root:Played cards: [[6, 'black', True], [2, 'blue', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:SCORE Player 0; folds: 1/1 -> score: 20
+DEBUG:root:SCORE Player 1; folds: 0/0 -> score: 10
+DEBUG:root:End round 1
+DEBUG:root:Init round 2 (deal cards)
+DEBUG:root:Cards player 0:[[9, 'blue', False], [2, 'black', False]]
+DEBUG:root:Cards player 1:[[2, 'yellow', False], [6, 'red', False]]
+DEBUG:root:Start round 2
+DEBUG:root:Prediction player 0: 0
+DEBUG:root:Prediction player 1: 2
+DEBUG:root:Fold 1: First player: 1
+DEBUG:root:Played cards: [[2, 'yellow', True], [9, 'blue', True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:Fold 2: First player: 1
+DEBUG:root:Played cards: [[2, 'black', True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:SCORE Player 0; folds: 0/0 -> score: 40
+DEBUG:root:SCORE Player 1; folds: 2/2 -> score: 50
+DEBUG:root:End round 2
+DEBUG:root:Init round 3 (deal cards)
+DEBUG:root:Cards player 0:[[7, 'blue', False], ['escape', None, False], ['mermaid', None, False]]
+DEBUG:root:Cards player 1:[[5, 'red', False], [12, 'yellow', False], [7, 'yellow', False]]
+DEBUG:root:Start round 3
+DEBUG:root:Prediction player 0: 2
+DEBUG:root:Prediction player 1: 0
+DEBUG:root:Fold 1: First player: 0
+DEBUG:root:Played cards: [['escape', None, True], [12, 'yellow', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 2: First player: 0
+DEBUG:root:Played cards: [[5, 'red', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 3: First player: 0
+DEBUG:root:Played cards: [[7, 'yellow', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:SCORE Player 0; folds: 3/2 -> score: 30
+DEBUG:root:SCORE Player 1; folds: 0/0 -> score: 80
+DEBUG:root:End round 3
+DEBUG:root:Init round 4 (deal cards)
+DEBUG:root:Cards player 0:[[7, 'red', False], [8, 'black', False], [10, 'yellow', False], [5, 'blue', False]]
+DEBUG:root:Cards player 1:[[2, 'blue', False], [4, 'yellow', False], [6, 'blue', False], [10, 'blue', False]]
+DEBUG:root:Start round 4
+DEBUG:root:Prediction player 0: 1
+DEBUG:root:Prediction player 1: 4
+DEBUG:root:Fold 1: First player: 1
+DEBUG:root:Played cards: [[10, 'blue', True], [5, 'blue', True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:Fold 2: First player: 1
+DEBUG:root:Played cards: [[10, 'yellow', True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:Fold 3: First player: 1
+DEBUG:root:Played cards: [[7, 'red', True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:Fold 4: First player: 1
+DEBUG:root:Played cards: [[8, 'black', True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:SCORE Player 0; folds: 0/1 -> score: 20
+DEBUG:root:SCORE Player 1; folds: 4/4 -> score: 160
+DEBUG:root:End round 4
+DEBUG:root:Init round 5 (deal cards)
+DEBUG:root:Cards player 0:[[3, 'yellow', False], [10, 'red', False], [1, 'red', False], [1, 'blue', False], [8, 'red', False]]
+DEBUG:root:Cards player 1:[[10, 'yellow', False], [8, 'black', False], ['pirate', None, False], [4, 'blue', False], [7, 'red', False]]
+DEBUG:root:Start round 5
+DEBUG:root:Prediction player 0: 2
+DEBUG:root:Prediction player 1: 5
+DEBUG:root:Fold 1: First player: 0
+DEBUG:root:Played cards: [[1, 'red', True], [7, 'red', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 2: First player: 0
+DEBUG:root:Played cards: [[4, 'blue', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 3: First player: 0
+DEBUG:root:Played cards: [[10, 'yellow', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 4: First player: 0
+DEBUG:root:Played cards: [['pirate', None, True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 5: First player: 0
+DEBUG:root:Played cards: [[8, 'black', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:SCORE Player 0; folds: 5/2 -> score: -10
+DEBUG:root:SCORE Player 1; folds: 0/5 -> score: 110
+DEBUG:root:End round 5
+DEBUG:root:Init round 6 (deal cards)
+DEBUG:root:Cards player 0:[[2, 'red', False], ['pirate', None, False], [7, 'black', False], [10, 'black', False], [4, 'red', False], [5, 'blue', False]]
+DEBUG:root:Cards player 1:[[1, 'black', False], [7, 'yellow', False], [11, 'red', False], [12, 'black', False], [7, 'blue', False], [3, 'black', False]]
+DEBUG:root:Start round 6
+DEBUG:root:Prediction player 0: 6
+DEBUG:root:Prediction player 1: 6
+DEBUG:root:Fold 1: First player: 1
+DEBUG:root:Played cards: [[1, 'black', True], [7, 'black', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 2: First player: 0
+DEBUG:root:Played cards: [[7, 'yellow', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 3: First player: 0
+DEBUG:root:Played cards: [[7, 'blue', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 4: First player: 0
+DEBUG:root:Played cards: [[12, 'black', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 5: First player: 0
+DEBUG:root:Played cards: [[11, 'red', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 6: First player: 0
+DEBUG:root:Played cards: [[3, 'black', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:SCORE Player 0; folds: 6/6 -> score: 110
+DEBUG:root:SCORE Player 1; folds: 0/6 -> score: 50
+DEBUG:root:End round 6
+DEBUG:root:Init round 7 (deal cards)
+DEBUG:root:Cards player 0:[[2, 'black', False], [11, 'blue', False], [10, 'yellow', False], [6, 'black', False], ['pirate', None, False], [4, 'red', False], [9, 'blue', False]]
+DEBUG:root:Cards player 1:[[12, 'yellow', False], [7, 'blue', False], [11, 'red', False], [4, 'yellow', False], [2, 'red', False], [5, 'blue', False], ['escape', None, False]]
+DEBUG:root:Start round 7
+DEBUG:root:Prediction player 0: 2
+DEBUG:root:Prediction player 1: 0
+DEBUG:root:Fold 1: First player: 0
+DEBUG:root:Played cards: [[10, 'yellow', True], ['escape', None, True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 2: First player: 0
+DEBUG:root:Played cards: [[7, 'blue', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 3: First player: 0
+DEBUG:root:Played cards: [[5, 'blue', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 4: First player: 0
+DEBUG:root:Played cards: [[12, 'yellow', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 5: First player: 0
+DEBUG:root:Played cards: [[11, 'red', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 6: First player: 0
+DEBUG:root:Played cards: [[2, 'red', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 7: First player: 0
+DEBUG:root:Played cards: [[4, 'yellow', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:SCORE Player 0; folds: 7/2 -> score: 60
+DEBUG:root:SCORE Player 1; folds: 0/0 -> score: 120
+DEBUG:root:End round 7
+DEBUG:root:Init round 8 (deal cards)
+DEBUG:root:Cards player 0:[[4, 'black', False], [8, 'black', False], [2, 'red', False], ['escape', None, False], ['escape', None, False], ['pirate', None, False], ['pirate', None, False], [2, 'black', False]]
+DEBUG:root:Cards player 1:[[5, 'red', False], [7, 'yellow', False], [5, 'blue', False], [8, 'blue', False], [9, 'blue', False], [12, 'blue', False], [5, 'black', False], ['escape', None, False]]
+DEBUG:root:Start round 8
+DEBUG:root:Prediction player 0: 4
+DEBUG:root:Prediction player 1: 0
+DEBUG:root:Fold 1: First player: 1
+DEBUG:root:Played cards: [[5, 'blue', True], [2, 'red', True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:Fold 2: First player: 1
+DEBUG:root:Played cards: [[4, 'black', True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:Fold 3: First player: 1
+DEBUG:root:Played cards: [[8, 'black', True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:Fold 4: First player: 1
+DEBUG:root:Played cards: [['pirate', None, True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:Fold 5: First player: 1
+DEBUG:root:Played cards: [['pirate', None, True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:Fold 6: First player: 1
+DEBUG:root:Played cards: [['escape', None, True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:Fold 7: First player: 1
+DEBUG:root:Played cards: [[2, 'black', True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:Fold 8: First player: 1
+DEBUG:root:Played cards: [['escape', None, True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:SCORE Player 0; folds: 0/4 -> score: 20
+DEBUG:root:SCORE Player 1; folds: 8/0 -> score: 40
+DEBUG:root:End round 8
+DEBUG:root:Init round 9 (deal cards)
+DEBUG:root:Cards player 0:[[3, 'black', False], [9, 'black', False], [2, 'red', False], [10, 'blue', False], [3, 'blue', False], [3, 'yellow', False], ['escape', None, False], ['escape', None, False], [8, 'yellow', False]]
+DEBUG:root:Cards player 1:[[11, 'red', False], [12, 'red', False], [10, 'red', False], [6, 'blue', False], ['skull_king', None, False], [9, 'red', False], [7, 'blue', False], [7, 'red', False], [5, 'yellow', False]]
+DEBUG:root:Start round 9
+DEBUG:root:Prediction player 0: 5
+DEBUG:root:Prediction player 1: 0
+DEBUG:root:Fold 1: First player: 0
+DEBUG:root:Played cards: [[3, 'black', True], [7, 'red', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 2: First player: 0
+DEBUG:root:Played cards: [[9, 'red', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 3: First player: 0
+DEBUG:root:Played cards: [[5, 'yellow', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 4: First player: 0
+DEBUG:root:Played cards: [['skull_king', None, True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 5: First player: 0
+DEBUG:root:Played cards: [[7, 'blue', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 6: First player: 0
+DEBUG:root:Played cards: [[10, 'red', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 7: First player: 0
+DEBUG:root:Played cards: [[6, 'blue', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 8: First player: 0
+DEBUG:root:Played cards: [[12, 'red', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 9: First player: 0
+DEBUG:root:Played cards: [[11, 'red', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:SCORE Player 0; folds: 9/5 -> score: -20
+DEBUG:root:SCORE Player 1; folds: 0/0 -> score: 130
+DEBUG:root:End round 9
+DEBUG:root:Init round 10 (deal cards)
+DEBUG:root:Cards player 0:[[11, 'red', False], ['pirate', None, False], ['escape', None, False], [7, 'black', False], ['pirate', None, False], [12, 'yellow', False], [12, 'blue', False], [5, 'blue', False], [7, 'yellow', False], ['escape', None, False]]
+DEBUG:root:Cards player 1:[['pirate', None, False], [3, 'red', False], [10, 'red', False], [6, 'blue', False], [9, 'black', False], [10, 'yellow', False], ['escape', None, False], [11, 'blue', False], [1, 'yellow', False], [1, 'black', False]]
+DEBUG:root:Start round 10
+DEBUG:root:Prediction player 0: 10
+DEBUG:root:Prediction player 1: 10
+DEBUG:root:Fold 1: First player: 1
+DEBUG:root:Played cards: [[1, 'black', True], ['pirate', None, True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 2: First player: 0
+DEBUG:root:Played cards: [[11, 'blue', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 3: First player: 0
+DEBUG:root:Played cards: [[10, 'red', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 4: First player: 0
+DEBUG:root:Played cards: [[3, 'red', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 5: First player: 0
+DEBUG:root:Played cards: [['escape', None, True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 6: First player: 0
+DEBUG:root:Played cards: [[9, 'black', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 7: First player: 0
+DEBUG:root:Played cards: [[1, 'yellow', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 8: First player: 0
+DEBUG:root:Played cards: [[6, 'blue', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 9: First player: 0
+DEBUG:root:Played cards: [['pirate', None, True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 10: First player: 0
+DEBUG:root:Played cards: [[10, 'yellow', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:SCORE Player 0; folds: 10/10 -> score: 180
+DEBUG:root:SCORE Player 1; folds: 0/10 -> score: 30
+DEBUG:root:End round 10
+INFO:root:Game ended
+INFO:root:New game started -------------------------------
+DEBUG:root:Init round 1 (deal cards)
+DEBUG:root:Cards player 0:[[2, 'black', False]]
+DEBUG:root:Cards player 1:[[1, 'red', False]]
 DEBUG:root:Start round 1
 DEBUG:root:Prediction player 0: 0
 DEBUG:root:Prediction player 1: 0
-DEBUG:root:Fold 1: First player: 0
-DEBUG:root:Played cards: [[1, 'black', True], ['escape', None, True]]
+DEBUG:root:Fold 1: First player: 1
+DEBUG:root:Played cards: [[1, 'red', True], [2, 'black', True]]
 DEBUG:root:Fold winner: 0
 DEBUG:root:SCORE Player 0; folds: 1/0 -> score: -10
 DEBUG:root:SCORE Player 1; folds: 0/0 -> score: 10
 DEBUG:root:End round 1
 DEBUG:root:Init round 2 (deal cards)
-DEBUG:root:Cards player 0: [[3, 'black', False], ['escape', None, False]]
-DEBUG:root:Cards player 1: [[9, 'blue', False], [4, 'yellow', False]]
+DEBUG:root:Cards player 0:[[2, 'black', False], ['pirate', None, False]]
+DEBUG:root:Cards player 1:[[12, 'red', False], [4, 'yellow', False]]
 DEBUG:root:Start round 2
-DEBUG:root:Prediction player 0: 2
-DEBUG:root:Prediction player 1: 2
-DEBUG:root:Fold 1: First player: 1
-DEBUG:root:Played cards: [[4, 'yellow', True], ['escape', None, True]]
-DEBUG:root:Fold winner: 1
-DEBUG:root:Fold 2: First player: 1
-DEBUG:root:Played cards: [[9, 'blue', True], [3, 'black', True]]
-DEBUG:root:Fold winner: 0
-DEBUG:root:SCORE Player 0; folds: 1/2 -> score: -20
-DEBUG:root:SCORE Player 1; folds: 1/2 -> score: 0
-DEBUG:root:End round 2
-DEBUG:root:Init round 3 (deal cards)
-DEBUG:root:Cards player 0: [[5, 'yellow', False], [1, 'red', False], [3, 'blue', False]]
-DEBUG:root:Cards player 1: [['pirate', None, False], [7, 'black', False], [9, 'blue', False]]
-DEBUG:root:Start round 3
-DEBUG:root:Prediction player 0: 2
-DEBUG:root:Prediction player 1: 3
-DEBUG:root:Fold 1: First player: 0
-DEBUG:root:Played cards: [[5, 'yellow', True], ['pirate', None, True]]
-DEBUG:root:Fold winner: 1
-DEBUG:root:Fold 2: First player: 1
-DEBUG:root:Played cards: [[7, 'black', True], [1, 'red', True]]
-DEBUG:root:Fold winner: 1
-DEBUG:root:Fold 3: First player: 1
-DEBUG:root:Played cards: [[9, 'blue', True], [3, 'blue', True]]
-DEBUG:root:Fold winner: 1
-DEBUG:root:SCORE Player 0; folds: 0/2 -> score: -40
-DEBUG:root:SCORE Player 1; folds: 3/3 -> score: 60
-DEBUG:root:End round 3
-DEBUG:root:Init round 4 (deal cards)
-DEBUG:root:Cards player 0: [[3, 'yellow', False], [3, 'red', False], [11, 'yellow', False], ['pirate', None, False]]
-DEBUG:root:Cards player 1: [[6, 'black', False], [10, 'black', False], [9, 'black', False], ['escape', None, False]]
-DEBUG:root:Start round 4
-DEBUG:root:Prediction player 0: 3
-DEBUG:root:Prediction player 1: 2
-DEBUG:root:Fold 1: First player: 1
-DEBUG:root:Played cards: [['escape', None, True], [3, 'red', True]]
-DEBUG:root:Fold winner: 1
-DEBUG:root:Fold 2: First player: 1
-DEBUG:root:Played cards: [[6, 'black', True], [11, 'yellow', True]]
-DEBUG:root:Fold winner: 1
-DEBUG:root:Fold 3: First player: 1
-DEBUG:root:Played cards: [[10, 'black', True], ['pirate', None, True]]
-DEBUG:root:Fold winner: 0
-DEBUG:root:Fold 4: First player: 0
-DEBUG:root:Played cards: [[3, 'yellow', True], [9, 'black', True]]
-DEBUG:root:Fold winner: 1
-DEBUG:root:SCORE Player 0; folds: 1/3 -> score: -60
-DEBUG:root:SCORE Player 1; folds: 3/2 -> score: 50
-DEBUG:root:End round 4
-DEBUG:root:Init round 5 (deal cards)
-DEBUG:root:Cards player 0: [[3, 'black', False], [9, 'blue', False], [12, 'black', False], ['escape', None, False], ['mermaid', None, False]]
-DEBUG:root:Cards player 1: [[11, 'red', False], [12, 'red', False], [1, 'yellow', False], ['pirate', None, False], ['pirate', None, False]]
-DEBUG:root:Start round 5
 DEBUG:root:Prediction player 0: 0
-DEBUG:root:Prediction player 1: 3
+DEBUG:root:Prediction player 1: 0
 DEBUG:root:Fold 1: First player: 0
-DEBUG:root:Played cards: [[3, 'black', True], ['pirate', None, True]]
-DEBUG:root:Fold winner: 1
-DEBUG:root:Fold 2: First player: 1
-DEBUG:root:Played cards: [[11, 'red', True], [12, 'black', True]]
-DEBUG:root:Fold winner: 0
-DEBUG:root:Fold 3: First player: 0
-DEBUG:root:Played cards: [[9, 'blue', True], ['pirate', None, True]]
-DEBUG:root:Fold winner: 1
-DEBUG:root:Fold 4: First player: 1
-DEBUG:root:Played cards: [[1, 'yellow', True], ['escape', None, True]]
-DEBUG:root:Fold winner: 1
-DEBUG:root:Fold 5: First player: 1
-DEBUG:root:Played cards: [[12, 'red', True], ['mermaid', None, True]]
-DEBUG:root:Fold winner: 0
-DEBUG:root:SCORE Player 0; folds: 2/0 -> score: -110
-DEBUG:root:SCORE Player 1; folds: 3/3 -> score: 110
-DEBUG:root:End round 5
-DEBUG:root:Init round 6 (deal cards)
-DEBUG:root:Cards player 0: [[9, 'blue', False], [9, 'red', False], [10, 'red', False], [8, 'yellow', False], [9, 'yellow', False], [4, 'blue', False]]
-DEBUG:root:Cards player 1: [[12, 'black', False], [12, 'yellow', False], [2, 'blue', False], [12, 'red', False], [1, 'black', False], [3, 'yellow', False]]
-DEBUG:root:Start round 6
-DEBUG:root:Prediction player 0: 1
-DEBUG:root:Prediction player 1: 5
-DEBUG:root:Fold 1: First player: 1
-DEBUG:root:Played cards: [[12, 'yellow', True], [8, 'yellow', True]]
-DEBUG:root:Fold winner: 1
-DEBUG:root:Fold 2: First player: 1
-DEBUG:root:Played cards: [[3, 'yellow', True], [9, 'yellow', True]]
-DEBUG:root:Fold winner: 0
-DEBUG:root:Fold 3: First player: 0
-DEBUG:root:Played cards: [[4, 'blue', True], [2, 'blue', True]]
-DEBUG:root:Fold winner: 0
-DEBUG:root:Fold 4: First player: 0
-DEBUG:root:Played cards: [[10, 'red', True], [12, 'red', True]]
-DEBUG:root:Fold winner: 1
-DEBUG:root:Fold 5: First player: 1
-DEBUG:root:Played cards: [[12, 'black', True], [9, 'blue', True]]
-DEBUG:root:Fold winner: 1
-DEBUG:root:Fold 6: First player: 1
-DEBUG:root:Played cards: [[1, 'black', True], [9, 'red', True]]
-DEBUG:root:Fold winner: 1
-DEBUG:root:SCORE Player 0; folds: 2/1 -> score: -120
-DEBUG:root:SCORE Player 1; folds: 4/5 -> score: 100
-DEBUG:root:End round 6
-DEBUG:root:Init round 7 (deal cards)
-DEBUG:root:Cards player 0: [['escape', None, False], [12, 'red', False], ['pirate', None, False], [12, 'blue', False], [9, 'yellow', False], [6, 'yellow', False], [9, 'red', False]]
-DEBUG:root:Cards player 1: [[3, 'yellow', False], [8, 'yellow', False], ['escape', None, False], ['escape', None, False], [10, 'blue', False], [6, 'blue', False], [1, 'red', False]]
-DEBUG:root:Start round 7
-DEBUG:root:Prediction player 0: 7
-DEBUG:root:Prediction player 1: 3
-DEBUG:root:Fold 1: First player: 0
-DEBUG:root:Played cards: [[9, 'yellow', True], [3, 'yellow', True]]
+DEBUG:root:Played cards: [['pirate', None, True], [12, 'red', True]]
 DEBUG:root:Fold winner: 0
 DEBUG:root:Fold 2: First player: 0
-DEBUG:root:Played cards: [[12, 'blue', True], [6, 'blue', True]]
-DEBUG:root:Fold winner: 0
-DEBUG:root:Fold 3: First player: 0
-DEBUG:root:Played cards: [[12, 'red', True], ['escape', None, True]]
-DEBUG:root:Fold winner: 0
-DEBUG:root:Fold 4: First player: 0
-DEBUG:root:Played cards: [['escape', None, True], ['escape', None, True]]
-DEBUG:root:Fold winner: 0
-DEBUG:root:Fold 5: First player: 0
-DEBUG:root:Played cards: [['pirate', None, True], [10, 'blue', True]]
-DEBUG:root:Fold winner: 0
-DEBUG:root:Fold 6: First player: 0
-DEBUG:root:Played cards: [[9, 'red', True], [1, 'red', True]]
-DEBUG:root:Fold winner: 0
-DEBUG:root:Fold 7: First player: 0
-DEBUG:root:Played cards: [[6, 'yellow', True], [8, 'yellow', True]]
-DEBUG:root:Fold winner: 1
-DEBUG:root:SCORE Player 0; folds: 6/7 -> score: -130
-DEBUG:root:SCORE Player 1; folds: 1/3 -> score: 80
-DEBUG:root:End round 7
-DEBUG:root:Init round 8 (deal cards)
-DEBUG:root:Cards player 0: [[5, 'black', False], [2, 'blue', False], ['pirate', None, False], ['escape', None, False], [10, 'yellow', False], ['escape', None, False], [5, 'blue', False], ['pirate', None, False]]
-DEBUG:root:Cards player 1: [[4, 'black', False], [3, 'yellow', False], [8, 'yellow', False], [9, 'black', False], ['escape', None, False], [2, 'red', False], ['escape', None, False], [5, 'yellow', False]]
-DEBUG:root:Start round 8
-DEBUG:root:Prediction player 0: 7
-DEBUG:root:Prediction player 1: 3
+INFO:root:New game started -------------------------------
+DEBUG:root:Init round 1 (deal cards)
+DEBUG:root:Cards player 0:[[2, 'blue', False]]
+DEBUG:root:Cards player 1:[['escape', None, False]]
+DEBUG:root:Start round 1
+DEBUG:root:Prediction player 0: 0
+DEBUG:root:Prediction player 1: 1
 DEBUG:root:Fold 1: First player: 1
-DEBUG:root:Played cards: [[2, 'red', True], ['escape', None, True]]
-DEBUG:root:Fold winner: 1
-DEBUG:root:Fold 2: First player: 1
 DEBUG:root:Played cards: [['escape', None, True], [2, 'blue', True]]
 DEBUG:root:Fold winner: 1
-DEBUG:root:Fold 3: First player: 1
-DEBUG:root:Played cards: [[5, 'yellow', True], ['escape', None, True]]
-DEBUG:root:Fold winner: 1
-DEBUG:root:Fold 4: First player: 1
-DEBUG:root:Played cards: [[3, 'yellow', True], ['pirate', None, True]]
-DEBUG:root:Fold winner: 0
-DEBUG:root:Fold 5: First player: 0
-DEBUG:root:Played cards: [[5, 'blue', True], ['escape', None, True]]
-DEBUG:root:Fold winner: 0
-DEBUG:root:Fold 6: First player: 0
-DEBUG:root:Played cards: [[5, 'black', True], [8, 'yellow', True]]
-DEBUG:root:Fold winner: 0
-DEBUG:root:Fold 7: First player: 0
-DEBUG:root:Played cards: [['pirate', None, True], [4, 'black', True]]
-DEBUG:root:Fold winner: 0
-DEBUG:root:Fold 8: First player: 0
-DEBUG:root:Played cards: [[10, 'yellow', True], [9, 'black', True]]
-DEBUG:root:Fold winner: 1
-DEBUG:root:SCORE Player 0; folds: 4/7 -> score: -160
-DEBUG:root:SCORE Player 1; folds: 4/3 -> score: 70
-DEBUG:root:End round 8
-DEBUG:root:Init round 9 (deal cards)
-DEBUG:root:Cards player 0: [['escape', None, False], [4, 'red', False], [2, 'yellow', False], [7, 'red', False], [3, 'blue', False], [4, 'yellow', False], [6, 'black', False], [1, 'black', False], [10, 'black', False]]
-DEBUG:root:Cards player 1: [['mermaid', None, False], [10, 'yellow', False], ['escape', None, False], [5, 'yellow', False], [11, 'red', False], [8, 'red', False], [5, 'blue', False], [4, 'blue', False], [8, 'blue', False]]
-DEBUG:root:Start round 9
-DEBUG:root:Prediction player 0: 8
-DEBUG:root:Prediction player 1: 7
+DEBUG:root:SCORE Player 0; folds: 0/0 -> score: 10
+DEBUG:root:SCORE Player 1; folds: 1/1 -> score: 20
+DEBUG:root:End round 1
+DEBUG:root:Init round 2 (deal cards)
+DEBUG:root:Cards player 0:[[7, 'yellow', False], [11, 'blue', False]]
+DEBUG:root:Cards player 1:[['escape', None, False], [12, 'yellow', False]]
+DEBUG:root:Start round 2
+DEBUG:root:Prediction player 0: 1
+DEBUG:root:Prediction player 1: 0
 DEBUG:root:Fold 1: First player: 0
-DEBUG:root:Played cards: [[6, 'black', True], ['escape', None, True]]
+DEBUG:root:Played cards: [[11, 'blue', True], ['escape', None, True]]
 DEBUG:root:Fold winner: 0
 DEBUG:root:Fold 2: First player: 0
-DEBUG:root:Played cards: [[10, 'black', True], [5, 'yellow', True]]
+DEBUG:root:Played cards: [[12, 'yellow', True]]
 DEBUG:root:Fold winner: 0
-DEBUG:root:Fold 3: First player: 0
-DEBUG:root:Played cards: [[7, 'red', True], [8, 'red', True]]
+DEBUG:root:SCORE Player 0; folds: 2/1 -> score: 0
+DEBUG:root:SCORE Player 1; folds: 0/0 -> score: 40
+DEBUG:root:End round 2
+DEBUG:root:Init round 3 (deal cards)
+DEBUG:root:Cards player 0:[[3, 'blue', False], [10, 'black', False], ['escape', None, False]]
+DEBUG:root:Cards player 1:[[7, 'black', False], ['pirate', None, False], [9, 'red', False]]
+DEBUG:root:Start round 3
+DEBUG:root:Prediction player 0: 1
+DEBUG:root:Prediction player 1: 3
+DEBUG:root:Fold 1: First player: 1
+DEBUG:root:Played cards: [[7, 'black', True], [3, 'blue', True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:Fold 2: First player: 1
+DEBUG:root:Played cards: [['escape', None, True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:Fold 3: First player: 1
+DEBUG:root:Played cards: [[10, 'black', True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:SCORE Player 0; folds: 0/1 -> score: -10
+DEBUG:root:SCORE Player 1; folds: 3/3 -> score: 100
+DEBUG:root:End round 3
+DEBUG:root:Init round 4 (deal cards)
+DEBUG:root:Cards player 0:[[9, 'blue', False], [9, 'yellow', False], ['escape', None, False], [5, 'black', False]]
+DEBUG:root:Cards player 1:[[2, 'black', False], ['pirate', None, False], ['escape', None, False], [3, 'blue', False]]
+DEBUG:root:Start round 4
+DEBUG:root:Prediction player 0: 4
+DEBUG:root:Prediction player 1: 4
+DEBUG:root:Fold 1: First player: 0
+DEBUG:root:Played cards: [[9, 'blue', True], ['pirate', None, True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:Fold 2: First player: 1
+DEBUG:root:Played cards: [[5, 'black', True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:Fold 3: First player: 1
+DEBUG:root:Played cards: [[9, 'yellow', True]]
 DEBUG:root:Fold winner: 1
 DEBUG:root:Fold 4: First player: 1
-DEBUG:root:Played cards: [[11, 'red', True], [4, 'red', True]]
+DEBUG:root:Played cards: [['escape', None, True]]
 DEBUG:root:Fold winner: 1
-DEBUG:root:Fold 5: First player: 1
-DEBUG:root:Played cards: [[5, 'blue', True], ['escape', None, True]]
+DEBUG:root:SCORE Player 0; folds: 0/4 -> score: -50
+DEBUG:root:SCORE Player 1; folds: 4/4 -> score: 180
+DEBUG:root:End round 4
+DEBUG:root:Init round 5 (deal cards)
+DEBUG:root:Cards player 0:[[7, 'yellow', False], [7, 'black', False], [3, 'red', False], [6, 'red', False], ['escape', None, False]]
+DEBUG:root:Cards player 1:[['pirate', None, False], [10, 'red', False], [8, 'black', False], [5, 'red', False], [12, 'red', False]]
+DEBUG:root:Start round 5
+DEBUG:root:Prediction player 0: 3
+DEBUG:root:Prediction player 1: 5
+DEBUG:root:Fold 1: First player: 1
+DEBUG:root:Played cards: [[5, 'red', True], [6, 'red', True]]
 DEBUG:root:Fold winner: 1
-DEBUG:root:Fold 6: First player: 1
-DEBUG:root:Played cards: [[10, 'yellow', True], [4, 'yellow', True]]
-DEBUG:root:Fold winner: 1
-DEBUG:root:Fold 7: First player: 1
-DEBUG:root:Played cards: [[8, 'blue', True], [3, 'blue', True]]
-DEBUG:root:Fold winner: 1
-DEBUG:root:Fold 8: First player: 1
-DEBUG:root:Played cards: [['mermaid', None, True], [2, 'yellow', True]]
-DEBUG:root:Fold winner: 1
-DEBUG:root:Fold 9: First player: 1
-DEBUG:root:Played cards: [[4, 'blue', True], [1, 'black', True]]
+DEBUG:root:Fold 2: First player: 1
+INFO:root:New game started -------------------------------
+DEBUG:root:Init round 1 (deal cards)
+DEBUG:root:Cards player 0:[[12, 'black', False]]
+DEBUG:root:Cards player 1:[[2, 'black', False]]
+DEBUG:root:Start round 1
+DEBUG:root:Prediction player 0: 1
+DEBUG:root:Prediction player 1: 0
+DEBUG:root:Fold 1: First player: 1
+DEBUG:root:Played cards: [[2, 'black', True], [12, 'black', True]]
 DEBUG:root:Fold winner: 0
-DEBUG:root:SCORE Player 0; folds: 3/8 -> score: -210
-DEBUG:root:SCORE Player 1; folds: 6/7 -> score: 60
-DEBUG:root:End round 9
-DEBUG:root:Init round 10 (deal cards)
-DEBUG:root:Cards player 0: [[12, 'yellow', False], [9, 'yellow', False], [9, 'red', False], [1, 'black', False], [10, 'yellow', False], ['escape', None, False], [2, 'black', False], [10, 'red', False], [7, 'yellow', False], [1, 'blue', False]]
-DEBUG:root:Cards player 1: [[4, 'red', False], ['escape', None, False], ['escape', None, False], ['escape', None, False], [8, 'red', False], ['mermaid', None, False], [8, 'black', False], [11, 'red', False], [3, 'red', False], [8, 'blue', False]]
-DEBUG:root:Start round 10
+DEBUG:root:SCORE Player 0; folds: 1/1 -> score: 20
+DEBUG:root:SCORE Player 1; folds: 0/0 -> score: 10
+DEBUG:root:End round 1
+DEBUG:root:Init round 2 (deal cards)
+DEBUG:root:Cards player 0:[[9, 'black', False], [10, 'yellow', False]]
+DEBUG:root:Cards player 1:[[8, 'red', False], ['escape', None, False]]
+DEBUG:root:Start round 2
+DEBUG:root:Prediction player 0: 0
+DEBUG:root:Prediction player 1: 0
+DEBUG:root:Fold 1: First player: 0
+DEBUG:root:Played cards: [[10, 'yellow', True], [8, 'red', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 2: First player: 0
+INFO:root:New game started -------------------------------
+DEBUG:root:Init round 1 (deal cards)
+DEBUG:root:Cards player 0:[[4, 'black', False]]
+DEBUG:root:Cards player 1:[[11, 'black', False]]
+DEBUG:root:Start round 1
 DEBUG:root:Prediction player 0: 1
 DEBUG:root:Prediction player 1: 1
 DEBUG:root:Fold 1: First player: 1
-DEBUG:root:Played cards: [[3, 'red', True], [9, 'red', True]]
+DEBUG:root:Played cards: [[11, 'black', True], [4, 'black', True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:SCORE Player 0; folds: 0/1 -> score: -10
+DEBUG:root:SCORE Player 1; folds: 1/1 -> score: 20
+DEBUG:root:End round 1
+DEBUG:root:Init round 2 (deal cards)
+DEBUG:root:Cards player 0:[['pirate', None, False], [11, 'black', False]]
+DEBUG:root:Cards player 1:[[7, 'black', False], [3, 'yellow', False]]
+DEBUG:root:Start round 2
+DEBUG:root:Prediction player 0: 0
+DEBUG:root:Prediction player 1: 0
+DEBUG:root:Fold 1: First player: 0
+DEBUG:root:Played cards: [['pirate', None, True], [7, 'black', True]]
 DEBUG:root:Fold winner: 0
 DEBUG:root:Fold 2: First player: 0
-DEBUG:root:Played cards: [['escape', None, True], [4, 'red', True]]
+INFO:root:New game started -------------------------------
+DEBUG:root:Init round 1 (deal cards)
+DEBUG:root:Cards player 0:[[10, 'black', False]]
+DEBUG:root:Cards player 1:[[1, 'yellow', False]]
+DEBUG:root:Start round 1
+DEBUG:root:Prediction player 0: 0
+DEBUG:root:Prediction player 1: 0
+DEBUG:root:Fold 1: First player: 1
+INFO:root:New game started -------------------------------
+DEBUG:root:Init round 1 (deal cards)
+DEBUG:root:Cards player 0:[['escape', None, False]]
+DEBUG:root:Cards player 1:[['escape', None, False]]
+DEBUG:root:Start round 1
+DEBUG:root:Prediction player 0: 0
+DEBUG:root:Prediction player 1: 1
+DEBUG:root:Fold 1: First player: 1
+DEBUG:root:Played cards: [['escape', None, True], ['escape', None, True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:SCORE Player 0; folds: 0/0 -> score: 10
+DEBUG:root:SCORE Player 1; folds: 1/1 -> score: 20
+DEBUG:root:End round 1
+DEBUG:root:Init round 2 (deal cards)
+DEBUG:root:Cards player 0:[[1, 'yellow', False], [12, 'yellow', False]]
+DEBUG:root:Cards player 1:[[1, 'blue', False], ['mermaid', None, False]]
+DEBUG:root:Start round 2
+DEBUG:root:Prediction player 0: 2
+DEBUG:root:Prediction player 1: 0
+DEBUG:root:Fold 1: First player: 0
+DEBUG:root:Played cards: [[1, 'yellow', True], [1, 'blue', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 2: First player: 0
+DEBUG:root:Played cards: [['mermaid', None, True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:SCORE Player 0; folds: 2/2 -> score: 50
+DEBUG:root:SCORE Player 1; folds: 0/0 -> score: 40
+DEBUG:root:End round 2
+DEBUG:root:Init round 3 (deal cards)
+DEBUG:root:Cards player 0:[[7, 'blue', False], ['pirate', None, False], [10, 'yellow', False]]
+DEBUG:root:Cards player 1:[[8, 'yellow', False], [5, 'blue', False], [1, 'red', False]]
+DEBUG:root:Start round 3
+DEBUG:root:Prediction player 0: 2
+DEBUG:root:Prediction player 1: 1
+DEBUG:root:Fold 1: First player: 1
+DEBUG:root:Played cards: [[1, 'red', True], ['pirate', None, True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 2: First player: 0
+DEBUG:root:Played cards: [[8, 'yellow', True]]
 DEBUG:root:Fold winner: 0
 DEBUG:root:Fold 3: First player: 0
-DEBUG:root:Played cards: [[7, 'yellow', True], ['escape', None, True]]
+DEBUG:root:Played cards: [[5, 'blue', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:SCORE Player 0; folds: 3/2 -> score: 40
+DEBUG:root:SCORE Player 1; folds: 0/1 -> score: 30
+DEBUG:root:End round 3
+DEBUG:root:Init round 4 (deal cards)
+DEBUG:root:Cards player 0:[['mermaid', None, False], [9, 'black', False], [4, 'blue', False], [5, 'red', False]]
+DEBUG:root:Cards player 1:[[11, 'red', False], [11, 'blue', False], [6, 'black', False], [1, 'red', False]]
+DEBUG:root:Start round 4
+DEBUG:root:Prediction player 0: 2
+DEBUG:root:Prediction player 1: 2
+DEBUG:root:Fold 1: First player: 0
+DEBUG:root:Played cards: [['mermaid', None, True], [11, 'blue', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 2: First player: 0
+DEBUG:root:Played cards: [[11, 'red', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 3: First player: 0
+DEBUG:root:Played cards: [[1, 'red', True]]
 DEBUG:root:Fold winner: 0
 DEBUG:root:Fold 4: First player: 0
-DEBUG:root:Played cards: [[10, 'red', True], ['escape', None, True]]
+DEBUG:root:Played cards: [[6, 'black', True]]
 DEBUG:root:Fold winner: 0
-DEBUG:root:Fold 5: First player: 0
-DEBUG:root:Played cards: [[1, 'blue', True], ['escape', None, True]]
-DEBUG:root:Fold winner: 0
-DEBUG:root:Fold 6: First player: 0
-DEBUG:root:Played cards: [[12, 'yellow', True], ['mermaid', None, True]]
+DEBUG:root:SCORE Player 0; folds: 4/2 -> score: 20
+DEBUG:root:SCORE Player 1; folds: 0/2 -> score: 10
+DEBUG:root:End round 4
+DEBUG:root:Init round 5 (deal cards)
+DEBUG:root:Cards player 0:[[5, 'yellow', False], [11, 'yellow', False], [8, 'yellow', False], [1, 'blue', False], [11, 'red', False]]
+DEBUG:root:Cards player 1:[[10, 'black', False], [7, 'black', False], [12, 'red', False], [4, 'red', False], [6, 'red', False]]
+DEBUG:root:Start round 5
+DEBUG:root:Prediction player 0: 5
+DEBUG:root:Prediction player 1: 2
+DEBUG:root:Fold 1: First player: 1
+DEBUG:root:Played cards: [[4, 'red', True], [11, 'red', True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:Fold 2: First player: 1
+DEBUG:root:Played cards: [[1, 'blue', True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:Fold 3: First player: 1
+DEBUG:root:Played cards: [[5, 'yellow', True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:Fold 4: First player: 1
+DEBUG:root:Played cards: [[8, 'yellow', True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:Fold 5: First player: 1
+DEBUG:root:Played cards: [[11, 'yellow', True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:SCORE Player 0; folds: 0/5 -> score: -30
+DEBUG:root:SCORE Player 1; folds: 5/2 -> score: -20
+DEBUG:root:End round 5
+DEBUG:root:Init round 6 (deal cards)
+DEBUG:root:Cards player 0:[[8, 'yellow', False], [7, 'yellow', False], [8, 'black', False], [2, 'black', False], [11, 'yellow', False], [9, 'blue', False]]
+DEBUG:root:Cards player 1:[[1, 'black', False], [5, 'red', False], [5, 'blue', False], [3, 'red', False], [7, 'black', False], [8, 'red', False]]
+DEBUG:root:Start round 6
+DEBUG:root:Prediction player 0: 4
+DEBUG:root:Prediction player 1: 1
+DEBUG:root:Fold 1: First player: 0
+DEBUG:root:Played cards: [[2, 'black', True], [7, 'black', True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:Fold 2: First player: 1
+DEBUG:root:Played cards: [[8, 'black', True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:Fold 3: First player: 1
+DEBUG:root:Played cards: [[7, 'yellow', True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:Fold 4: First player: 1
+DEBUG:root:Played cards: [[8, 'yellow', True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:Fold 5: First player: 1
+DEBUG:root:Played cards: [[9, 'blue', True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:Fold 6: First player: 1
+DEBUG:root:Played cards: [[11, 'yellow', True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:SCORE Player 0; folds: 0/4 -> score: -70
+DEBUG:root:SCORE Player 1; folds: 6/1 -> score: -70
+DEBUG:root:End round 6
+DEBUG:root:Init round 7 (deal cards)
+DEBUG:root:Cards player 0:[['pirate', None, False], [12, 'yellow', False], [10, 'red', False], [9, 'yellow', False], [1, 'blue', False], [4, 'red', False], [12, 'black', False]]
+DEBUG:root:Cards player 1:[['pirate', None, False], ['pirate', None, False], [6, 'red', False], [1, 'red', False], [2, 'blue', False], [8, 'yellow', False], [5, 'blue', False]]
+DEBUG:root:Start round 7
+DEBUG:root:Prediction player 0: 1
+DEBUG:root:Prediction player 1: 0
+DEBUG:root:Fold 1: First player: 1
+DEBUG:root:Played cards: [[1, 'red', True], [10, 'red', True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:Fold 2: First player: 1
+DEBUG:root:Played cards: [[9, 'yellow', True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:Fold 3: First player: 1
+DEBUG:root:Played cards: [['pirate', None, True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:Fold 4: First player: 1
+DEBUG:root:Played cards: [[4, 'red', True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:Fold 5: First player: 1
+DEBUG:root:Played cards: [[12, 'black', True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:Fold 6: First player: 1
+DEBUG:root:Played cards: [[12, 'yellow', True]]
 DEBUG:root:Fold winner: 1
 DEBUG:root:Fold 7: First player: 1
-DEBUG:root:Played cards: [[8, 'red', True], [1, 'black', True]]
+DEBUG:root:Played cards: [[1, 'blue', True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:SCORE Player 0; folds: 0/1 -> score: -80
+DEBUG:root:SCORE Player 1; folds: 7/0 -> score: -140
+DEBUG:root:End round 7
+DEBUG:root:Init round 8 (deal cards)
+DEBUG:root:Cards player 0:[[11, 'black', False], [11, 'yellow', False], ['escape', None, False], [7, 'yellow', False], [2, 'yellow', False], [2, 'blue', False], ['escape', None, False], [6, 'red', False]]
+DEBUG:root:Cards player 1:[['pirate', None, False], [10, 'yellow', False], [1, 'blue', False], ['skull_king', None, False], [6, 'black', False], ['pirate', None, False], [11, 'red', False], [3, 'black', False]]
+DEBUG:root:Start round 8
+DEBUG:root:Prediction player 0: 2
+DEBUG:root:Prediction player 1: 3
+DEBUG:root:Fold 1: First player: 0
+DEBUG:root:Played cards: [[11, 'yellow', True], ['skull_king', None, True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:Fold 2: First player: 1
+DEBUG:root:Played cards: [[11, 'black', True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:Fold 3: First player: 1
+DEBUG:root:Played cards: [[7, 'yellow', True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:Fold 4: First player: 1
+DEBUG:root:Played cards: [[6, 'red', True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:Fold 5: First player: 1
+DEBUG:root:Played cards: [[2, 'blue', True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:Fold 6: First player: 1
+DEBUG:root:Played cards: [['escape', None, True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:Fold 7: First player: 1
+DEBUG:root:Played cards: [[2, 'yellow', True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:Fold 8: First player: 1
+DEBUG:root:Played cards: [['escape', None, True]]
+DEBUG:root:Fold winner: 1
+DEBUG:root:SCORE Player 0; folds: 0/2 -> score: -100
+DEBUG:root:SCORE Player 1; folds: 8/3 -> score: -190
+DEBUG:root:End round 8
+DEBUG:root:Init round 9 (deal cards)
+DEBUG:root:Cards player 0:[['pirate', None, False], [8, 'black', False], [5, 'red', False], [12, 'red', False], [6, 'black', False], [8, 'blue', False], ['pirate', None, False], ['escape', None, False], [3, 'yellow', False]]
+DEBUG:root:Cards player 1:[[5, 'black', False], [4, 'blue', False], [1, 'black', False], [7, 'black', False], ['pirate', None, False], ['pirate', None, False], [11, 'yellow', False], [4, 'black', False], ['escape', None, False]]
+DEBUG:root:Start round 9
+DEBUG:root:Prediction player 0: 8
+DEBUG:root:Prediction player 1: 8
+DEBUG:root:Fold 1: First player: 1
+DEBUG:root:Played cards: [[4, 'black', True], [8, 'black', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 2: First player: 0
+DEBUG:root:Played cards: [['pirate', None, True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 3: First player: 0
+DEBUG:root:Played cards: [[5, 'black', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 4: First player: 0
+DEBUG:root:Played cards: [[11, 'yellow', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 5: First player: 0
+DEBUG:root:Played cards: [[4, 'blue', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 6: First player: 0
+DEBUG:root:Played cards: [[1, 'black', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 7: First player: 0
+DEBUG:root:Played cards: [[7, 'black', True]]
 DEBUG:root:Fold winner: 0
 DEBUG:root:Fold 8: First player: 0
-DEBUG:root:Played cards: [[10, 'yellow', True], [11, 'red', True]]
+DEBUG:root:Played cards: [['escape', None, True]]
 DEBUG:root:Fold winner: 0
 DEBUG:root:Fold 9: First player: 0
-DEBUG:root:Played cards: [[9, 'yellow', True], [8, 'black', True]]
-DEBUG:root:Fold winner: 1
-DEBUG:root:Fold 10: First player: 1
-DEBUG:root:Played cards: [[8, 'blue', True], [2, 'black', True]]
+DEBUG:root:Played cards: [['pirate', None, True]]
 DEBUG:root:Fold winner: 0
-DEBUG:root:SCORE Player 0; folds: 8/1 -> score: -280
-DEBUG:root:SCORE Player 1; folds: 2/1 -> score: 50
+DEBUG:root:SCORE Player 0; folds: 9/8 -> score: -110
+DEBUG:root:SCORE Player 1; folds: 0/8 -> score: -270
+DEBUG:root:End round 9
+DEBUG:root:Init round 10 (deal cards)
+DEBUG:root:Cards player 0:[[7, 'black', False], ['escape', None, False], [5, 'blue', False], [4, 'black', False], [10, 'blue', False], [7, 'yellow', False], [9, 'red', False], [3, 'blue', False], [12, 'yellow', False], [8, 'black', False]]
+DEBUG:root:Cards player 1:[[1, 'red', False], [8, 'yellow', False], [7, 'blue', False], [11, 'blue', False], [9, 'yellow', False], [9, 'black', False], [5, 'black', False], [8, 'red', False], [10, 'yellow', False], [6, 'black', False]]
+DEBUG:root:Start round 10
+DEBUG:root:Prediction player 0: 8
+DEBUG:root:Prediction player 1: 6
+DEBUG:root:Fold 1: First player: 0
+DEBUG:root:Played cards: [[10, 'blue', True], [11, 'blue', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 2: First player: 0
+DEBUG:root:Played cards: [[8, 'yellow', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 3: First player: 0
+DEBUG:root:Played cards: [[6, 'black', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 4: First player: 0
+DEBUG:root:Played cards: [[9, 'black', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 5: First player: 0
+DEBUG:root:Played cards: [[8, 'red', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 6: First player: 0
+DEBUG:root:Played cards: [[5, 'black', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 7: First player: 0
+DEBUG:root:Played cards: [[1, 'red', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 8: First player: 0
+DEBUG:root:Played cards: [[7, 'blue', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 9: First player: 0
+DEBUG:root:Played cards: [[10, 'yellow', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:Fold 10: First player: 0
+DEBUG:root:Played cards: [[9, 'yellow', True]]
+DEBUG:root:Fold winner: 0
+DEBUG:root:SCORE Player 0; folds: 10/8 -> score: -130
+DEBUG:root:SCORE Player 1; folds: 0/6 -> score: -330
 DEBUG:root:End round 10
 INFO:root:Game ended

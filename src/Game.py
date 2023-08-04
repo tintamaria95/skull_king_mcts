@@ -1,7 +1,7 @@
 import random
 from typing import List
 import logging
-# from copy import deepcopy
+from copy import deepcopy
 
 from Deck import Deck
 
@@ -28,10 +28,19 @@ class Game():
     players_pred_folds: List[str] = []
     players_won_folds: List[str] = []
     players_scores = []
+    player_id2type_player = {}
 
-    mcts = {}
+    chosen_color = None
+    fold_cards = []
 
     game_round = 1  # from 1 to 10
+
+    # MCTS
+    mode_playout = False
+    chckpt_bid = 0
+    chckpt_fold = 0
+    chckpt_player_turn = 0
+    nb_iterations_per_action = 100
 
     def __init__(self, game_round=1, nb_players=2, players=None,
                  players_type={'random': [0, 1], 'human': [], 'mcts': []}):
@@ -49,7 +58,6 @@ class Game():
         self.first_round_player = random.randint(0, nb_players - 1)
         self.players_scores = [0 for _ in range(nb_players)]
 
-        self.player_id2type_player = {}
         for t in ['random', 'human', 'mcts']:
             for player_id in players_type[t]:
                 self.player_id2type_player[player_id] = t
@@ -67,7 +75,9 @@ class Game():
                 return - 10 * abs(predicted_wins - actual_wins)
 
     def init_round(self):
-        logging.debug(f'Init round {self.game_round} (deal cards)')
+        if not self.mode_playout:
+            logging.debug(
+                f'Init round {self.game_round} (deal cards)')
         # shuffle the deck
         deck = Deck()
         cards_to_draw = [[v, c, False] for (v, c) in deck.cards_to_draw]
@@ -80,18 +90,23 @@ class Game():
                 ] for player_id in range(self.nb_players)]
 
         self.players_pred_folds = [0 for _ in range(self.nb_players)]
+        self.chckpt_bid = 0
+        self.chckpt_fold = 0
+        self.chckpt_player_turn = 0
 
-        for player_id in range(self.nb_players):
-            logging.debug(
-                f'Cards player {player_id}: {self.players_cards[player_id]}')
+        if not self.mode_playout:
+            for player_id in range(self.nb_players):
+                logging.debug(
+                    f'Cards player {player_id}:'
+                    f'{self.players_cards[player_id]}')
 
     def action_bid(self, player_id: int):
-        if self.player_id2type_player[player_id] == 'random':
+        if self.player_id2type_player[player_id] == 'random' \
+                or self.mode_playout:
             self.players_pred_folds[player_id] = random.randint(
                 0, self.game_round)
         elif self.player_id2type_player[player_id] == 'mcts':
-            self.players_pred_folds[player_id] = random.randint(
-                0, self.game_round)
+            self.players_pred_folds[player_id] = self.mcts_bid(player_id)
         elif self.player_id2type_player[player_id] == 'human':
             bid_choice = ''
             while not bid_choice.isnumeric():
@@ -104,84 +119,160 @@ class Game():
                 "{self.player_id2type_player[player_id]}."
                 "Player type must be in 'random', 'human' or 'mcts'.")
 
+    def action_choose_card(self, player_id: int, legal_moves: List[int]):
+        if self.player_id2type_player[player_id] == 'random' \
+                or self.mode_playout:
+            return random.choice(legal_moves)
+        elif self.player_id2type_player[player_id] == 'mcts':
+            return self.mcts_choose_card(player_id, legal_moves)
+        elif self.player_id2type_player[player_id] == 'human':
+            card_choice = ''
+            while True:
+                card_choice = input(
+                    f'Choose bid (in range (0-{self.game_round}): ')
+                try:
+                    if int(card_choice) in legal_moves:
+                        return int(card_choice)
+                except ValueError:
+                    logging.debug(f"Invalid card  choice: {card_choice}")
+        else:
+            raise ValueError(
+                f"Type of player {player_id} = "
+                f"{self.player_id2type_player[player_id]}."
+                "Player type must be in 'random', 'human' or 'mcts'.")
+
+    def mcts_bid(self, player_id: int):
+        '''
+        must make modifs for hidden cards
+        '''
+        legal_moves = range(self.game_round + 1)
+        best_sum_scores = - 1e6
+        for move in legal_moves:
+            sum_scores = 0
+            for _ in range(self.nb_iterations_per_action // len(legal_moves)):
+                chckpt_game = deepcopy(self)
+                chckpt_game.mode_playout = True
+                chckpt_game.players_pred_folds[player_id] = move
+                chckpt_game.chckpt_bid += 1
+                chckpt_game.play_round()
+                sum_scores += chckpt_game.players_scores[player_id]
+            if sum_scores > best_sum_scores:
+                best_sum_scores = sum_scores
+                best_move = move
+        return best_move
+
+    def mcts_choose_card(self, player_id: int, legal_moves: List[int]):
+        '''
+        must make modifs for hidden cards
+        '''
+        best_sum_scores = - 1e6
+        for move in legal_moves:
+            sum_scores = 0
+            for _ in range(self.nb_iterations_per_action // len(legal_moves)):
+                chckpt_game = deepcopy(self)
+                chckpt_game.mode_playout = True
+                chckpt_game.play_chosen_card(player_id=player_id, action=move)
+                chckpt_game.chckpt_player_turn += 1
+                chckpt_game.play_round()
+                sum_scores += chckpt_game.players_scores[player_id]
+            if sum_scores > best_sum_scores:
+                best_sum_scores = sum_scores
+                best_move = move
+        return best_move
+
+    def get_legal_moves(self, player_id: int):
+        is_chosen_color_in_player_cards = self.chosen_color in [
+            card[1] for card in self.players_cards[player_id]
+            if not card[2]]
+        # A player must follow the color of the round if he can
+        # 'black' and special cards are not concerned.
+        if self.chosen_color not in ['black', None] and \
+                is_chosen_color_in_player_cards:
+            return [
+                i for i, card in enumerate(self.players_cards[player_id])
+                # special cards can be played instead of chosen_color
+                if (card[1] == self.chosen_color or card[1] is None)
+                and not card[2]]
+        else:
+            return [
+                i for i, card in enumerate(self.players_cards[player_id])
+                if not card[2]]
+
+    def play_chosen_card(self, *, player_id: int, action: int):
+        self.players_cards[player_id][action][2] = True  # set as played
+        chosen_card = self.players_cards[player_id][action]
+        self.fold_cards.append(chosen_card)
+
+        # Set the color for the fold if not already set
+        if self.chosen_color is None:
+            if str(chosen_card[0]).isnumeric():
+                self.chosen_color = chosen_card[1]  # numbered card
+            elif chosen_card[0] in [
+                    'pirate', 'mermaid', 'scary_mary', 'skull_king']:
+                self.chosen_color = 'incolor'  # No mandatory color
+            elif chosen_card[0] == 'escape':
+                self.chosen_color = None  # No change, maybe next cards
+            else:
+                raise ValueError('Logic problem')
+
     def play_round(self):
         # The first player to play at the beginning of the round
         # changes at each round
         self.first_player = self.first_round_player % (self.nb_players)
-        logging.debug(f'Start round {self.game_round}')
+        if not self.mode_playout:
+            logging.debug(f'Start round {self.game_round}')
         # Phase 1: Bid
-        for player_id in range(self.nb_players):
+        for player_id in range(self.chckpt_bid, self.nb_players):
+            self.chckpt_bid = player_id
             self.action_bid(player_id)
-            logging.debug(
-                f'Prediction player {player_id}:'
-                f' {self.players_pred_folds[player_id]}')
-        # Phase 2: Play cards
-        for i_round in range(self.game_round):
-            logging.debug(
-                f'Fold {i_round + 1}: '
-                f'First player: {self.first_player}')
-            chosen_color = None
-            fold_cards = []
-            for i in range(self.nb_players):
-                turn = (self.first_player + i) % (self.nb_players)
-                is_chosen_color_in_player_cards = chosen_color in [
-                        card[1] for card in self.players_cards[turn]
-                        if not card[2]]
-                # A player must follow the color of the round if he can
-                # 'black' and special cards are not concerned.
-                if chosen_color not in ['black', None] and \
-                        is_chosen_color_in_player_cards:
-                    legal_moves = [
-                        i for i, card in enumerate(self.players_cards[turn])
-                        # special cards can be played instead of chosen_color
-                        if (card[1] == chosen_color or card[1] is None)
-                        and not card[2]]
-                else:
-                    legal_moves = [
-                        i for i, card in enumerate(self.players_cards[turn])
-                        if not card[2]]
+            if not self.mode_playout:
+                logging.debug(
+                    f'Prediction player {player_id}:'
+                    f' {self.players_pred_folds[player_id]}')
+        # Phase 2: Play cards and save score
+        for i_fold in range(self.chckpt_fold, self.game_round):
+            self.chckpt_fold = i_fold
+            if not self.mode_playout:
+                logging.debug(
+                    f'Fold {i_fold + 1}: '
+                    f'First player: {self.first_player}')
+            self.chosen_color = None
+            self.fold_cards = []
+            for i_turn in range(self.chckpt_player_turn, self.nb_players):
+                self.chckpt_player_turn = i_turn
+                turn = (self.first_player + i_turn) % (self.nb_players)
+                legal_moves = self.get_legal_moves(turn)
                 # ACTION
-                action = random.choice(legal_moves)
-                self.players_cards[turn][action][2] = True  # set as played
+                action = self.action_choose_card(turn, legal_moves)
+                self.play_chosen_card(player_id=turn, action=action)
 
-                chosen_card = self.players_cards[turn][action]
-                fold_cards.append(chosen_card)
-
-                # Set the color for the fold if not already set
-                if chosen_color is None:
-                    if str(chosen_card[0]).isnumeric():
-                        chosen_color = chosen_card[1]  # numbered card
-                    elif chosen_card[0] in [
-                            'pirate', 'mermaid', 'scary_mary', 'skull_king']:
-                        chosen_color = 'incolor'  # No mandatory color
-                    elif chosen_card[0] == 'escape':
-                        chosen_color = None  # No change, wait for future color
-                    else:
-                        raise ValueError('Logic problem')
             # Check who wins the fold
-            logging.debug(
-                f'Played cards: {fold_cards}')
+            if not self.mode_playout:
+                logging.debug(
+                    f'Played cards: {self.fold_cards}')
             player_who_won = (
                 self.first_player +
-                get_index_winner_card(fold_cards)) % (self.nb_players)
+                get_index_winner_card(self.fold_cards)) % (self.nb_players)
             # set the winner as the first player for next fold
             self.first_player = player_who_won
-            logging.debug(
-                f'Fold winner: {player_who_won}')
+            if not self.mode_playout:
+                logging.debug(
+                    f'Fold winner: {player_who_won}')
             self.players_won_folds[player_who_won] += 1
         # Calculate the score for each player and save
         self.players_scores = [self.players_scores[player_id] + self.get_score(
             predicted_wins=self.players_pred_folds[player_id],
             actual_wins=self.players_won_folds[player_id]
         ) for player_id in range(self.nb_players)]
-        for player_id in range(self.nb_players):
-            logging.debug(
-                f'SCORE Player {player_id};'
-                f' folds: {self.players_won_folds[player_id]}'
-                f'/{self.players_pred_folds[player_id]}'
-                f' -> score: {self.players_scores[player_id]}')
         self.first_round_player += 1
-        logging.debug(f'End round {self.game_round}')
+        if not self.mode_playout:
+            for player_id in range(self.nb_players):
+                logging.debug(
+                    f'SCORE Player {player_id};'
+                    f' folds: {self.players_won_folds[player_id]}'
+                    f'/{self.players_pred_folds[player_id]}'
+                    f' -> score: {self.players_scores[player_id]}')
+            logging.debug(f'End round {self.game_round}')
 
     def play_game(self):
         assert self.game_round > 0 and self.game_round <= 10
@@ -208,8 +299,14 @@ def get_index_winner_card(fold_cards: list):
         elif all([True for card in fold_cards
                   if card[1] in ['red', 'yellow', 'blue'] or
                   card[0] == 'escape']):
-            chosen_color = fold_cards[0][1]
-            max_value = fold_cards[0][0]
+            is_all_escape = True
+            for card in fold_cards:
+                if card[1] is not None:
+                    is_all_escape = False
+                    chosen_color = card[1]
+                    max_value = card[0]
+            if is_all_escape:
+                return 0
             index_best_card = 0
             for i, card in enumerate(fold_cards):
                 if card[1] == chosen_color and card[0] > max_value:
@@ -263,7 +360,12 @@ if __name__ == "__main__":
 
     args = {
         'nb_players': 2,
-        'game_round': 1
+        'game_round': 1,
+        # 'players_type': {
+        #     'random': [0],
+        #     'mcts': [1],
+        #     'human': []
+        # }
     }
 
     game = Game(**args)
