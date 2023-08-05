@@ -32,8 +32,11 @@ class Game():
     players_scores = []
     player_id2type_player = {}
 
+    # The chosen color during a fold
     chosen_color = None
     fold_cards = []
+    # We note that cards are shuffled between each of the 10 rounds
+    discard_pile = []
 
     game_round = 1  # from 1 to 10
 
@@ -42,10 +45,11 @@ class Game():
     chckpt_bid = 0
     chckpt_fold = 0
     chckpt_player_turn = 0
-    nb_iterations_per_action = 20
+    nb_iters_per_action = 20
 
     def __init__(self, game_round=1, nb_players=2, players=None,
-                 players_type={'random': [0, 1], 'human': [], 'mcts': []}):
+                 players_type={'random': [0, 1], 'human': [], 'mcts': []},
+                 nb_iters_per_action=20):
         assert nb_players == sum([len(x) for x in players_type.values()]), \
             ("param 'nb_players' must be equal to the number of"
              " players indexes defined in 'players_type'")
@@ -56,6 +60,7 @@ class Game():
              " >= 0 and < 'nb_players' (in range(nb_players))")
 
         self.nb_players = nb_players
+        self.nb_iters_per_action = nb_iters_per_action
         self.game_round = game_round
         self.first_round_player = random.randint(0, nb_players - 1)
         self.players_scores = [0 for _ in range(nb_players)]
@@ -84,13 +89,15 @@ def action_bid(game: Game, player_id: int):
         return random.randint(
             0, game.game_round)
     elif game.player_id2type_player[player_id] == 'mcts':
-        return mcts_bid(game, player_id)
+        return mcts(game=game, player_id=player_id, phase='bid')
     elif game.player_id2type_player[player_id] == 'human':
         bid_choice = ''
-        while not bid_choice.isnumeric():
+        while True:
             bid_choice = input(
                 f'Choose bid (in range (0-{game.game_round}): ')
-            return int(bid_choice)
+            if bid_choice.isnumeric():
+                if int(bid_choice) in range(game.game_round + 1):
+                    return int(bid_choice)
     else:
         raise ValueError(
             f"Type of player {player_id} = "
@@ -98,12 +105,13 @@ def action_bid(game: Game, player_id: int):
             "Player type must be in 'random', 'human' or 'mcts'.")
 
 
-def action_card_choice(game: Game, player_id: int, legal_moves: List[int]):
+def action_choose_card(game: Game, player_id: int, legal_moves: List[int]):
     if game.player_id2type_player[player_id] == 'random' \
             or game.mode_playout:
         return random.choice(legal_moves)
     elif game.player_id2type_player[player_id] == 'mcts':
-        return mcts_card_choice(game, player_id, legal_moves)
+        return mcts(game=game, player_id=player_id,
+                    legal_moves=legal_moves, phase='play_card')
     elif game.player_id2type_player[player_id] == 'human':
         card_choice = ''
         while True:
@@ -140,41 +148,29 @@ def get_legal_moves(game: Game, player_id: int):
             if not card[2]]
 
 
-def mcts_bid(game: Game, player_id: int):
+def mcts(game: Game, player_id: int, legal_moves=None, phase=None):
     '''
-    must make modifs for hidden cards
     '''
-    legal_moves = range(game.game_round + 1)
+    if phase == 'bid':
+        legal_moves = range(game.game_round + 1)
     best_sum_scores = - 1e6
     for move in legal_moves:
         sum_scores = 0
-        for _ in range(game.nb_iterations_per_action // len(legal_moves)):
+        for _ in range(game.nb_iters_per_action // len(legal_moves)):
             chckpt_game = deepcopy(game)
             assert not chckpt_game.mode_playout, \
                 ('logic error, should not already be in mode_playout')
             chckpt_game.mode_playout = True
-            chckpt_game.players_pred_folds[player_id] = move
-            chckpt_game = play_round(chckpt_game)
-            sum_scores += chckpt_game.players_scores[player_id]
-        if sum_scores > best_sum_scores:
-            best_sum_scores = sum_scores
-            best_move = move
-    return best_move
-
-
-def mcts_card_choice(game: Game, player_id: int, legal_moves: List[int]):
-    '''
-    must make modifs for hidden cards
-    '''
-    best_sum_scores = - 1e6
-    for move in legal_moves:
-        sum_scores = 0
-        for _ in range(game.nb_iterations_per_action // len(legal_moves)):
-            chckpt_game = deepcopy(game)
-            chckpt_game.mode_playout = True
-            chckpt_game = play_card(
-                chckpt_game, player_id=player_id, action=move)
-            # chckpt_game.chckpt_player_turn += 1
+            if phase == 'bid':
+                chckpt_game.players_pred_folds[player_id] = move
+            elif phase == 'play_card':
+                chckpt_game = play_card(
+                    chckpt_game, player_id=player_id, action=move)
+            else:
+                raise ValueError(
+                    f"'phase: {phase}'"
+                    "Parameter 'phase must have been set to 'bid' or"
+                    "'play_card'.")
             chckpt_game = play_round(chckpt_game)
             sum_scores += chckpt_game.players_scores[player_id]
         if sum_scores > best_sum_scores:
@@ -263,7 +259,7 @@ def play_round(game: Game):
             legal_moves = get_legal_moves(game, turn)
 
             # ACTION
-            action = action_card_choice(game, turn, legal_moves)
+            action = action_choose_card(game, turn, legal_moves)
             game = play_card(game, turn, action)
         game.chckpt_player_turn = 0
 
@@ -276,6 +272,9 @@ def play_round(game: Game):
             get_index_winner_card(game.fold_cards)) % (game.nb_players)
         # set the winner as the first player for next fold
         game.first_player = player_who_won
+        # Transfer the cards of the fold to the 'discard pile' which allow
+        # mcts to remember which card has been played earlier in the round
+        game.discard_pile.extend(game.fold_cards)
         # empty the fold after getting winner
         game.fold_cards = []
         if not game.mode_playout:
@@ -283,11 +282,14 @@ def play_round(game: Game):
                 f'Fold winner: {player_who_won}')
         game.players_won_folds[player_who_won] += 1
 
+    # Empty the discard pile (~shuffle with the deck) at the end of a round
+    game.discard_pile = []
     # Calculate the score for each player and save
     game.players_scores = [game.players_scores[player_id] + get_score(
         game=game, predicted_wins=game.players_pred_folds[player_id],
         actual_wins=game.players_won_folds[player_id]
     ) for player_id in range(game.nb_players)]
+    # set the first player of the next round
     game.first_round_player = (game.first_round_player + 1) % (
         game.nb_players)
     if not game.mode_playout:
@@ -390,11 +392,12 @@ if __name__ == "__main__":
     logging.info('New game started -------------------------------')
 
     args = {
-        'nb_players': 5,
+        'nb_players': 2,
         'game_round': 1,
+        'nb_iters_per_action': 10,
         'players_type': {
-            'random': [1, 0, 3, 4],
-            'mcts': [2],
+            'random': [0],
+            'mcts': [1],
             'human': []
         }
     }
@@ -409,6 +412,6 @@ if __name__ == "__main__":
 
         logging.info('Game ended')
 
-        if argmax(game.players_scores) == 2:
+        if argmax(game.players_scores) == 1:
             cpt_victory += 1
     print(f'victory ratio mcts on random: {cpt_victory / nb_games}')
