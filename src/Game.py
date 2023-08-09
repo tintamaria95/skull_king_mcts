@@ -35,8 +35,13 @@ class Game():
     # The chosen color during a fold
     chosen_color = None
     fold_cards = []
-    # We note that cards are shuffled between each of the 10 rounds
-    discard_pile = []
+    # Keep track of information (owned or played cards) that mcts player
+    # should have  of the game and build a list of the cards which still
+    # have to be played.
+    # The list is completed whenn the player receives cards and when an other
+    # player plays a card.
+    # (We note that whole deck card is shuffled between each of the 10 rounds)
+    possible_remaining_cards_in_deck = []
 
     game_round = 1  # from 1 to 10
 
@@ -148,6 +153,18 @@ def get_legal_moves(game: Game, player_id: int):
             if not card[2]]
 
 
+def get_randomly_generated_players_hands(game: Game):
+    '''
+    Skull King is a Hidden information game, this function replaces
+    the actual hands of other players by 'possible' hands they may
+    have, based on the 'possible_remaining_cards_in_deck' Game class
+    variable.
+    It simulates the fact that we shouldn't have information of other
+    players hands.
+    '''
+    pass
+
+
 def mcts(game: Game, player_id: int, legal_moves=None, phase=None):
     '''
     '''
@@ -164,14 +181,13 @@ def mcts(game: Game, player_id: int, legal_moves=None, phase=None):
             if phase == 'bid':
                 chckpt_game.players_pred_folds[player_id] = move
             elif phase == 'play_card':
-                chckpt_game = play_card(
-                    chckpt_game, player_id=player_id, action=move)
+                play_card(chckpt_game, player_id=player_id, action=move)
             else:
                 raise ValueError(
                     f"'phase: {phase}'"
                     "Parameter 'phase must have been set to 'bid' or"
                     "'play_card'.")
-            chckpt_game = play_round(chckpt_game)
+            play_round(chckpt_game)
             sum_scores += chckpt_game.players_scores[player_id]
         if sum_scores > best_sum_scores:
             best_sum_scores = sum_scores
@@ -180,7 +196,7 @@ def mcts(game: Game, player_id: int, legal_moves=None, phase=None):
 
 
 def play_card(game: Game, player_id, action: int):
-    game = deepcopy(game)
+
     game.players_cards[player_id][action][2] = True  # set as played
     chosen_card = game.players_cards[player_id][action]
     game.fold_cards = [x for x in game.fold_cards]
@@ -197,17 +213,18 @@ def play_card(game: Game, player_id, action: int):
             game.chosen_color = None  # No change, maybe next cards
         else:
             raise ValueError('Logic problem')
-    return game
 
 
 def init_round(game: Game):
-    game = deepcopy(game)
+
     if not game.mode_playout:
         logging.debug(
             f'Init round {game.game_round} (deal cards)')
     # shuffle the deck
     deck = Deck()
     cards_to_draw = [[v, c, False] for (v, c) in deck.cards_to_draw]
+    # keep track of cards which have not been already played
+    game.possible_remaining_cards_in_deck = [x.copy() for x in cards_to_draw]
     # gives each player a number of cards equal to the game round number
     game.players_won_folds = [0] * game.nb_players
     game.players_cards = [
@@ -226,11 +243,10 @@ def init_round(game: Game):
             logging.debug(
                 f'Cards player {player_id}:'
                 f'{game.players_cards[player_id]}')
-    return game
 
 
 def play_round(game: Game):
-    game = deepcopy(game)
+
     # The first player to play at the beginning of the round
     # changes at each round
     game.first_player = game.first_round_player % (game.nb_players)
@@ -260,7 +276,11 @@ def play_round(game: Game):
 
             # ACTION
             action = action_choose_card(game, turn, legal_moves)
-            game = play_card(game, turn, action)
+            # remove card of list of remaining cards to play
+            game.possible_remaining_cards_in_deck.remove(
+                game.players_cards[turn][action])
+            play_card(game, turn, action)
+
         game.chckpt_player_turn = 0
 
         # Check who wins the fold
@@ -272,9 +292,6 @@ def play_round(game: Game):
             get_index_winner_card(game.fold_cards)) % (game.nb_players)
         # set the winner as the first player for next fold
         game.first_player = player_who_won
-        # Transfer the cards of the fold to the 'discard pile' which allow
-        # mcts to remember which card has been played earlier in the round
-        game.discard_pile.extend(game.fold_cards)
         # empty the fold after getting winner
         game.fold_cards = []
         if not game.mode_playout:
@@ -282,8 +299,6 @@ def play_round(game: Game):
                 f'Fold winner: {player_who_won}')
         game.players_won_folds[player_who_won] += 1
 
-    # Empty the discard pile (~shuffle with the deck) at the end of a round
-    game.discard_pile = []
     # Calculate the score for each player and save
     game.players_scores = [game.players_scores[player_id] + get_score(
         game=game, predicted_wins=game.players_pred_folds[player_id],
@@ -300,16 +315,14 @@ def play_round(game: Game):
                 f'/{game.players_pred_folds[player_id]}'
                 f' -> score: {game.players_scores[player_id]}')
         logging.debug(f'End round {game.game_round}')
-    return game
 
 
 def play_game(game: Game):
     assert game.game_round > 0 and game.game_round <= 10
     for _ in range(game.game_round, 11):
-        game = init_round(game)
-        game = play_round(game)
+        init_round(game)
+        play_round(game)
         game.game_round += 1
-    return game
 
 
 def get_index_winner_card(fold_cards: list):
@@ -408,7 +421,8 @@ if __name__ == "__main__":
         game = Game(**args)
         # game.init_round()
         # game.play_round()
-        game = play_game(game)
+        # game = play_game(game)
+        play_game(game)
 
         logging.info('Game ended')
 

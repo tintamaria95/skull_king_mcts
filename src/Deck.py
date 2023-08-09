@@ -11,7 +11,7 @@ class Deck():
         # False indicates that the card hasn't been played yet
         self.cards_list = [
             *[(number, color)
-                for number in range(1, 13)
+                for number in range(1, 14)
                 for color in ('red', 'blue', 'yellow', 'black')],
             *[('escape', None)] * 6,
             *[('pirate', None)] * 5,
