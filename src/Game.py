@@ -26,8 +26,18 @@ class Game():
     # The player who won the previous fold
     first_player = None
 
-    players_cards: List[str] = []
+    # List of cards in the hand of each player.
+    # Each card is a tuple: (card_value: int | str, color: str | None)
+    players_cards = []
+    # Lists of card indexes for each player.
+    # 0: card not played in this round
+    # 1: card already played in this round
+    # example: [[0, 0, 1, 0], [0, 0, 0, 0]]]
+    # -> 2 players, round 3, p1 played 3rd card
+    players_played_cards_indexes = []
+    # Predictions of folds each player make for the round
     players_pred_folds: List[str] = []
+    # Won folds of each player at the end of the round
     players_won_folds: List[str] = []
     players_scores = []
     player_id2type_player = {}
@@ -35,13 +45,15 @@ class Game():
     # The chosen color during a fold
     chosen_color = None
     fold_cards = []
-    # Keep track of information (owned or played cards) that mcts player
+    # Keep track of information (owned or played cards) that mcts players
     # should have  of the game and build a list of the cards which still
     # have to be played.
-    # The list is completed whenn the player receives cards and when an other
+    # The list is completed when the player receives cards and when an other
     # player plays a card.
     # (We note that whole deck card is shuffled between each of the 10 rounds)
-    possible_remaining_cards_in_deck = []
+    # Works as followed -> [[1, 'red'], [2, 'blue'], ...]
+
+    # possible_remaining_cards_in_deck_by_pov = []  #
 
     game_round = 1  # from 1 to 10
 
@@ -63,6 +75,10 @@ class Game():
                        y for x in players_type.values() for y in x]), \
             ("Index values in 'players_type' must be"
              " >= 0 and < 'nb_players' (in range(nb_players))")
+        assert (
+            set([x for y in players_type.values() for x in y]) ==
+            set(range(nb_players))), \
+            ("Values in players_type dict must be [0, 1, ..., nb_players - 1]")
 
         self.nb_players = nb_players
         self.nb_iters_per_action = nb_iters_per_action
@@ -136,8 +152,8 @@ def action_choose_card(game: Game, player_id: int, legal_moves: List[int]):
 
 def get_legal_moves(game: Game, player_id: int):
     is_chosen_color_in_player_cards = game.chosen_color in [
-        card[1] for card in game.players_cards[player_id]
-        if not card[2]]
+        card[1] for i, card in enumerate(game.players_cards[player_id])
+        if not game.players_played_cards_indexes[player_id][i]]
     # A player must follow the color of the round if he can
     # 'black' and special cards are not concerned.
     if game.chosen_color not in ['black', None] and \
@@ -146,11 +162,11 @@ def get_legal_moves(game: Game, player_id: int):
             i for i, card in enumerate(game.players_cards[player_id])
             # special cards can be played instead of chosen_color
             if (card[1] == game.chosen_color or card[1] is None)
-            and not card[2]]
+            and not game.players_played_cards_indexes[player_id][i]]
     else:
         return [
             i for i, card in enumerate(game.players_cards[player_id])
-            if not card[2]]
+            if not game.players_played_cards_indexes[player_id][i]]
 
 
 def get_randomly_generated_players_hands(game: Game):
@@ -197,7 +213,7 @@ def mcts(game: Game, player_id: int, legal_moves=None, phase=None):
 
 def play_card(game: Game, player_id, action: int):
 
-    game.players_cards[player_id][action][2] = True  # set as played
+    game.players_played_cards_indexes[player_id][action] = True  # played
     chosen_card = game.players_cards[player_id][action]
     game.fold_cards = [x for x in game.fold_cards]
     game.fold_cards.append(chosen_card)
@@ -222,18 +238,17 @@ def init_round(game: Game):
             f'Init round {game.game_round} (deal cards)')
     # shuffle the deck
     deck = Deck()
-    cards_to_draw = [[v, c, False] for (v, c) in deck.cards_to_draw]
-    # keep track of cards which have not been already played
-    game.possible_remaining_cards_in_deck = [x.copy() for x in cards_to_draw]
     # gives each player a number of cards equal to the game round number
-    game.players_won_folds = [0] * game.nb_players
     game.players_cards = [
-            cards_to_draw[
+            deck.cards_to_draw[
                 player_id * game.game_round:
                 player_id * game.game_round + game.game_round
             ] for player_id in range(game.nb_players)]
-
+    game.players_played_cards_indexes = [
+        [False for _ in range(game.game_round)]
+        for _ in range(game.nb_players)]
     game.players_pred_folds = [0 for _ in range(game.nb_players)]
+    game.players_won_folds = [0] * game.nb_players
     game.chckpt_bid = 0
     game.chckpt_fold = 0
     game.chckpt_player_turn = 0
@@ -276,9 +291,6 @@ def play_round(game: Game):
 
             # ACTION
             action = action_choose_card(game, turn, legal_moves)
-            # remove card of list of remaining cards to play
-            game.possible_remaining_cards_in_deck.remove(
-                game.players_cards[turn][action])
             play_card(game, turn, action)
 
         game.chckpt_player_turn = 0
@@ -416,7 +428,7 @@ if __name__ == "__main__":
     }
 
     cpt_victory = 0
-    nb_games = 20
+    nb_games = 1
     for _ in tqdm(range(nb_games)):
         game = Game(**args)
         # game.init_round()
