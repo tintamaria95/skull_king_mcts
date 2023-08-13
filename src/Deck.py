@@ -29,6 +29,3 @@ class Deck():
 
     def get_shuffled_deck(self):
         return random.sample(self.cards_list, self.number_of_cards)
-
-    def get_cards_from_deck(nb_cards: int, cards_already_played: list):
-        pass

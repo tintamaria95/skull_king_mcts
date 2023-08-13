@@ -35,6 +35,9 @@ class Game():
     # example: [[0, 0, 1, 0], [0, 0, 0, 0]]]
     # -> 2 players, round 3, p1 played 3rd card
     players_played_cards_indexes = []
+    # Keep track of observed cards (in hand and played) by each player
+    # Possibility to only update mcts players (useless for others)
+    players_observed_cards_in_round = []
     # Predictions of folds each player make for the round
     players_pred_folds: List[str] = []
     # Won folds of each player at the end of the round
@@ -211,10 +214,23 @@ def mcts(game: Game, player_id: int, legal_moves=None, phase=None):
     return best_move
 
 
+def set_card_as_observed_by_player(
+        game: Game, card_index: int, player_id: int):
+    game.players_observed_cards_in_round[player_id][card_index] = True
+
+
 def play_card(game: Game, player_id, action: int):
 
-    game.players_played_cards_indexes[player_id][action] = True  # played
+    game.players_played_cards_indexes[player_id][action] = True
     chosen_card = game.players_cards[player_id][action]
+    # when a card is played, all players observe it as played
+    card_index = Deck.card2index[chosen_card]
+    for player_id in range(game.nb_players):
+        set_card_as_observed_by_player(
+            game=game,
+            card_index=card_index,
+            player_id=player_id
+        )
     game.fold_cards = [x for x in game.fold_cards]
     game.fold_cards.append(chosen_card)
 
@@ -247,11 +263,20 @@ def init_round(game: Game):
     game.players_played_cards_indexes = [
         [False for _ in range(game.game_round)]
         for _ in range(game.nb_players)]
+    game.players_observed_cards_in_round = [
+        [0] * len(deck.cards_to_draw)
+        for _ in range(game.nb_players)]
     game.players_pred_folds = [0 for _ in range(game.nb_players)]
     game.players_won_folds = [0] * game.nb_players
     game.chckpt_bid = 0
     game.chckpt_fold = 0
     game.chckpt_player_turn = 0
+
+    # Players observe their cards
+    for player_id in range(game.nb_players):
+        for card in game.players_cards[player_id]:
+            card_index = Deck.card2index[card]
+            set_card_as_observed_by_player(game, card_index, player_id)
 
     if not game.mode_playout:
         for player_id in range(game.nb_players):
