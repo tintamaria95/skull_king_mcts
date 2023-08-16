@@ -1,6 +1,6 @@
 class GameConfig():
     # GLOBAL
-    nb_games = 5
+    nb_games = 50
     log_level = 'INFO'  # DEBUG, INFO, WARNING, ERROR
 
     # PLAYERS

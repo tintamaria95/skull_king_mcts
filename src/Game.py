@@ -62,10 +62,10 @@ class Game():
     chckpt_player_turn = 0
     nb_iters_per_action = 20
 
-    node_root = None
-    node_current = None
+    node_root: Node
+    node_current: Node
 
-    def __init__(self, **args):
+    def __init__(self, node_root=None, **args):
         assert args['nb_players'] == sum(
             [len(x) for x in args['players_type'].values()]), \
             ("param 'nb_players' must be equal to the number of"
@@ -92,8 +92,5 @@ class Game():
             for player_id in args['players_type'][t]:
                 self.player_id2type_player[player_id] = t
 
-        if args['mcts_type'] == 'puremcts':
-            self.node_root = Node(
-                parent=None,
-                signature='_')
-            self.node_current = self.node_root
+        self.node_root = node_root
+        self.node_current = self.node_root

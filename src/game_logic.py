@@ -6,6 +6,7 @@ from typing import List
 
 from game_config import GameConfig
 from Game import Game
+from Node import Node
 from Deck import Deck
 from game_utils import (
     play_card, set_card_as_observed_by_player, get_score,
@@ -152,12 +153,15 @@ def action_bid(game: Game, player_id: int):
 
 
 def action_choose_card(game: Game, player_id: int, legal_moves: List[int]):
-    if game.player_id2type_player[player_id] == 'random' \
-            or game.mode_playout:
-        return random.choice(legal_moves)
-    elif game.player_id2type_player[player_id] == 'mcts':
+    if (game.player_id2type_player[player_id] == 'mcts' or
+            GameConfig.mcts_type == 'puremcts') and \
+            not game.mode_playout:
         return mcts(game=game, player_id=player_id,
                     legal_moves=legal_moves, phase='play_card')
+    elif game.player_id2type_player[player_id] == 'random' \
+            or game.mode_playout:
+        return random.choice(legal_moves)
+
     elif game.player_id2type_player[player_id] == 'human':
         card_choice = ''
         while True:
@@ -207,8 +211,6 @@ def flatmc(game: Game, player_id: int, legal_moves=None, phase=None):
             if not GameConfig.is_mcts_cheater:
                 replace_hands_of_other_players_depending_of_player_pov(
                     chckpt_game, player_id)
-            assert not chckpt_game.mode_playout, \
-                ('logic error, should not already be in mode_playout')
             chckpt_game.mode_playout = True
             if phase == 'bid':
                 chckpt_game.players_pred_folds[player_id] = move
@@ -228,32 +230,78 @@ def flatmc(game: Game, player_id: int, legal_moves=None, phase=None):
 
 
 def puremcts(game: Game, player_id: int, legal_moves=None, phase=None):
+
+    # in bid phase, set legal_moves
     if phase == 'bid':
         legal_moves = range(game.game_round + 1)
-    best_sum_scores = - 1e6
-    for move in legal_moves:
-        sum_scores = 0
-        for _ in range(game.nb_iters_per_action // len(legal_moves)):
-            chckpt_game = deepcopy(game)
-            # Defines if mcts plays with hidden information or not
-            if not GameConfig.is_mcts_cheater:
-                replace_hands_of_other_players_depending_of_player_pov(
-                    chckpt_game, player_id)
-            assert not chckpt_game.mode_playout, \
-                ('logic error, should not already be in mode_playout')
-            chckpt_game.mode_playout = True
-            if phase == 'bid':
-                chckpt_game.players_pred_folds[player_id] = move
-            elif phase == 'play_card':
-                play_card(chckpt_game, player_id=player_id, action=move)
-            else:
-                raise ValueError(
-                    f"'phase: {phase}'"
-                    "Parameter 'phase must have been set to 'bid' or"
-                    "'play_card'.")
-            play_round(chckpt_game)
-            sum_scores += chckpt_game.players_scores[player_id]
-        if sum_scores > best_sum_scores:
-            best_sum_scores = sum_scores
-            best_move = move
-    return best_move
+    # Option 1, current node has chlid(ren), leaf not reached
+    if game.node_current.is_has_child_node():
+        # no constraint on bid choice
+        if phase == 'bid':
+            chosen_move = random.choices(
+                population=legal_moves,
+                weights=[
+                    x.get_weight()
+                    for x in game.node_current.get_children()],
+                k=1
+            )
+            move = chosen_move[0]
+            game.node_current = game.node_current.get_children()[move]
+        # possible constraint on card choice
+        elif phase == 'play_card':
+            # we consider duplicate cards as same action to play,
+            # then we must must remove duplicate choices in legal_moves
+            legal_moves_without_duplicates = [
+                x for x in {
+                    game.players_cards[player_id][move]: move
+                    for move in legal_moves}.values()]
+            # restrict the choice of nodes to the legal_moves
+            playable_move = [
+                x for i, x in enumerate(game.players_cards[player_id])
+                if i in legal_moves_without_duplicates]
+
+            chosen_move = random.choices(
+                population=legal_moves_without_duplicates,
+                weights=[
+                    x.get_weight()
+                    for x in game.node_current.get_children()
+                    if x.get_move() in playable_move
+                    ],
+                k=1
+            )
+            move = chosen_move[0]
+            game.node_current = [
+                x for x in game.node_current.get_children()
+                if x.get_move() == game.players_cards[player_id][move]][0]
+        else:
+            raise ValueError('incorrect phase type')
+
+    # Option 2, new leaf nodes are created and one is chosen randomly
+    else:
+        # all next moves will be randomly played until terminal
+        game.mode_playout = True
+        chosen_move = random.choice(legal_moves)
+        move = chosen_move
+        if phase == 'play_card':
+            # from index in hand to tuple card
+            chosen_move = game.players_cards[player_id][chosen_move]
+
+        if phase == 'bid':
+            all_moves = range(game.game_round + 1)
+        elif phase == 'play_card':
+            # remove duplicates, 2 same cards are the same action
+            # less states, faster convergence
+            all_moves = list(set(Deck.cards_list))
+        else:
+            raise ValueError('incorrect phase type')
+
+        for m in all_moves:
+            child_node = Node(
+                parent=game.node_current,
+                move=m
+                )
+            if chosen_move == m:
+                next_node = child_node
+            game.node_current.add_child(child_node)
+        game.node_current = next_node
+    return move
