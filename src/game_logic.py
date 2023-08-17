@@ -4,7 +4,7 @@ import logging
 from copy import deepcopy
 from typing import List
 
-from game_config import GameConfig
+from GameConfig import GameConfig
 from Game import Game
 from Node import Node
 from Deck import Deck
@@ -131,13 +131,8 @@ def play_round(game: Game):
 
 
 def action_bid(game: Game, player_id: int):
-    if game.player_id2type_player[player_id] == 'random' \
-            or game.mode_playout:
-        return random.randint(
-            0, game.game_round)
-    elif game.player_id2type_player[player_id] == 'mcts':
-        return mcts(game=game, player_id=player_id, phase='bid')
-    elif game.player_id2type_player[player_id] == 'human':
+    if game.player_id2type_player[player_id] == 'human' \
+            and not game.mode_playout:
         bid_choice = ''
         while True:
             bid_choice = input(
@@ -145,6 +140,12 @@ def action_bid(game: Game, player_id: int):
             if bid_choice.isnumeric():
                 if int(bid_choice) in range(game.game_round + 1):
                     return int(bid_choice)
+    elif game.player_id2type_player[player_id] == 'random' \
+            or game.mode_playout:
+        return random.randint(
+            0, game.game_round)
+    elif game.player_id2type_player[player_id] == 'mcts':
+        return mcts(game=game, player_id=player_id, phase='bid')
     else:
         raise ValueError(
             f"Type of player {player_id} = "
@@ -153,7 +154,18 @@ def action_bid(game: Game, player_id: int):
 
 
 def action_choose_card(game: Game, player_id: int, legal_moves: List[int]):
-    if (game.player_id2type_player[player_id] == 'mcts' or
+    if game.player_id2type_player[player_id] == 'human' \
+            and not game.mode_playout:
+        card_choice = ''
+        while True:
+            card_choice = input(
+                f'Choose card (in range (0-{game.game_round}): ')
+            try:
+                if int(card_choice) in legal_moves:
+                    return int(card_choice)
+            except ValueError:
+                logging.debug(f"Invalid card  choice: {card_choice}")
+    elif (game.player_id2type_player[player_id] == 'mcts' or
             GameConfig.mcts_type == 'puremcts') and \
             not game.mode_playout:
         return mcts(game=game, player_id=player_id,
@@ -161,17 +173,6 @@ def action_choose_card(game: Game, player_id: int, legal_moves: List[int]):
     elif game.player_id2type_player[player_id] == 'random' \
             or game.mode_playout:
         return random.choice(legal_moves)
-
-    elif game.player_id2type_player[player_id] == 'human':
-        card_choice = ''
-        while True:
-            card_choice = input(
-                f'Choose bid (in range (0-{game.game_round}): ')
-            try:
-                if int(card_choice) in legal_moves:
-                    return int(card_choice)
-            except ValueError:
-                logging.debug(f"Invalid card  choice: {card_choice}")
     else:
         raise ValueError(
             f"Type of player {player_id} = "
@@ -205,10 +206,11 @@ def flatmc(game: Game, player_id: int, legal_moves=None, phase=None):
     best_sum_scores = - 1e6
     for move in legal_moves:
         sum_scores = 0
-        for _ in range(game.nb_iters_per_action // len(legal_moves)):
+        for _ in range(game.player_id2nb_of_iterations[player_id]
+                       // len(legal_moves)):
             chckpt_game = deepcopy(game)
             # Defines if mcts plays with hidden information or not
-            if not GameConfig.is_mcts_cheater:
+            if not game.player_id2is_cheater[player_id]:
                 replace_hands_of_other_players_depending_of_player_pov(
                     chckpt_game, player_id)
             chckpt_game.mode_playout = True

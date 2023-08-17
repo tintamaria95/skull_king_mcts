@@ -38,7 +38,9 @@ class Game():
     # Won folds of each player at the end of the round
     players_won_folds: List[str] = []
     players_scores = []
+    player_id2nb_of_iterations = {}
     player_id2type_player = {}
+    player_id2is_cheater = {}
 
     # The chosen color during a fold
     chosen_color = None
@@ -66,31 +68,17 @@ class Game():
     node_current: Node
 
     def __init__(self, node_root=None, **args):
-        assert args['nb_players'] == sum(
-            [len(x) for x in args['players_type'].values()]), \
-            ("param 'nb_players' must be equal to the number of"
-             " players indexes defined in 'players_type'")
-        assert all(v in range(args['nb_players'])
-                   for v in [
-                       y for x in args['players_type'].values() for y in x]), \
-            ("Index values in 'players_type' must be"
-             " >= 0 and < 'nb_players' (in range(nb_players))")
-        assert (
-            set([x for y in args['players_type'].values() for x in y]) ==
-            set(range(args['nb_players']))), \
-            ("Values in players_type dict must be [0, 1, ..., nb_players - 1]")
 
         self.nb_players = args['nb_players']
-        self.nb_iters_per_action = args['nb_iters_per_action']
         assert args['first_game_round'] <= args['last_game_round']
         self.game_round = args['first_game_round']
         self.last_game_round = args['last_game_round']
         self.first_round_player = random.randint(0, args['nb_players'] - 1)
         self.players_scores = [0 for _ in range(args['nb_players'])]
 
-        for t in ['random', 'human', 'mcts']:
-            for player_id in args['players_type'][t]:
-                self.player_id2type_player[player_id] = t
+        self.player_id2type_player = args['player_id2type_player']
+        self.player_id2nb_of_iterations = args['player_id2nb_of_iterations']
+        self.player_id2is_cheater = args['player_id2is_cheater']
 
         self.node_root = node_root
         self.node_current = self.node_root

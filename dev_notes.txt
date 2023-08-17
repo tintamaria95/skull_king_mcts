@@ -1,0 +1,11 @@
+Python version 3.11.4
+
+Pour faciliter l'apprentissage:
+    La carte scary_mary n'est pas implémentée
+    Le score ne prend en compte que les plis dans le calcul du score et pas les captures de sirenes ou de skull king
+
+Pour plus tard: finaliser l'algo de puremcts (construction d'arbre et sauvegarde pour entrainement long terme)
+Difficultés:
+    - jeu non-déterministe
+    - Information partielle/cachée
+    - Tours des joueurs dépendent des plis (complexifie la construction de l'arbre)
